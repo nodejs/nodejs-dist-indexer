@@ -23,5 +23,6 @@
   "bin": {
     "nodejs-dist-indexer": "./dist-indexer.js",
     "nodejs-ls-types": "./ls-types.js"
-  }
+  },
+  "preferGlobal": true
 }
