@@ -1,6 +1,7 @@
 const assert = require('assert')
     , types = {
           'tar.gz'             : 'src'
+        , 'aix-ppc64'          : 'aix-ppc64'
         , 'darwin-x64'         : 'osx-x64-tar'
         , 'darwin-x86'         : 'osx-x86-tar'
         , 'pkg'                : 'osx-x64-pkg'
@@ -116,6 +117,7 @@ if (module === require.main) {
     , { file: 'node-v0.11.9-linux-x86.tar.gz', type: 'linux-x86' }
     , { file: 'node-v0.11.9-sunos-x64.tar.gz', type: 'sunos-x64' }
     , { file: 'node-v0.11.9-sunos-x86.tar.gz', type: 'sunos-x86' }
+    , { file: 'node-v6.7.0-aix-ppc64.tar.gz', type: 'aix-ppc64'}
     , { file: 'node-v0.11.9.tar.gz', type: 'src' }
     , { file: 'node.exe', type: 'win-x86-exe' }
     , { file: 'x64/node.exe', type: 'win-x64-exe' }
