@@ -10,6 +10,8 @@ const assert = require('assert')
         , 'linux-x64'          : 'linux-x64'
         , 'linux-x86'          : 'linux-x86'
         , 'linux-ppc64le'      : 'linux-ppc64le'
+        , 'smartos-x64'        : 'smartos-x64'
+        , 'smartos-x86'        : 'smartos-x86'
         , 'sunos-x64'          : 'sunos-x64'
         , 'sunos-x86'          : 'sunos-x86'
         , 'x64.msi'            : 'win-x64-msi'
@@ -114,6 +116,8 @@ if (module === require.main) {
     , { file: 'node-v0.11.9-darwin-x86.tar.gz', type: 'osx-x86-tar' }
     , { file: 'node-v0.11.9-linux-x64.tar.gz', type: 'linux-x64' }
     , { file: 'node-v0.11.9-linux-x86.tar.gz', type: 'linux-x86' }
+    , { file: 'node-v7.0.0-smartos-x64.tar.gz', type: 'smartos-x64' }
+    , { file: 'node-v7.0.0-smartos-x86.tar.gz', type: 'smartos-x86' }
     , { file: 'node-v0.11.9-sunos-x64.tar.gz', type: 'sunos-x64' }
     , { file: 'node-v0.11.9-sunos-x86.tar.gz', type: 'sunos-x86' }
     , { file: 'node-v0.11.9.tar.gz', type: 'src' }
