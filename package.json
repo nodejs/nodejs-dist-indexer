@@ -1,0 +1,27 @@
+{
+  "name": "nodejs-dist-indexer",
+  "version": "1.0.0",
+  "description": "An application to create nodejs.org distribution index files: index.json and index.tab",
+  "main": "dist-indexer.js",
+  "author": "Rod Vagg <rod@vagg.org>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodejs/nodejs-dist-indexer.git"
+  },
+  "dependencies": {
+    "after": "~0.8.2",
+    "bl": "~1.1.2",
+    "hyperquest": "~1.0.1",
+    "map-async": "~0.1.1",
+    "minimist": "~1.2.0",
+    "semver": "~5.3.0"
+  },
+  "scripts": {
+    "test": "node ls-types.js && node transform-filename.js && node decode-ref.js"
+  },
+  "bin": {
+    "nodejs-dist-indexer": "./dist-indexer.js",
+    "nodejs-ls-types": "./ls-types.js"
+  }
+}
