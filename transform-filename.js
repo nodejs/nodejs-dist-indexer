@@ -19,10 +19,18 @@ const assert = require('assert')
         , 'x86.msi'          : 'win-x86-msi'
         , 'win-x64/iojs.exe' : 'win-x64-exe'
         , 'win-x86/iojs.exe' : 'win-x86-exe'
+        , 'win-arm/iojs.exe' : 'win-arm-exe'
         , 'win-x64/node.exe' : 'win-x64-exe'
         , 'win-x86/node.exe' : 'win-x86-exe'
+        , 'win-arm/node.exe' : 'win-arm-exe'
         , 'node.exe'         : 'win-x86-exe'
         , 'x64/node.exe'     : 'win-x64-exe'
+        , 'win-x64.7z'       : 'win-x64-7z'
+        , 'win-x86.7z'       : 'win-x86-7z'
+        , 'win-arm.7z'       : 'win-arm-7z'
+        , 'win-x64.zip'      : 'win-x64-zip'
+        , 'win-x86.zip'      : 'win-x86-zip'
+        , 'win-arm.zip'      : 'win-arm-zip'
         , 'headers'          : 'headers'
       }
 
@@ -133,6 +141,13 @@ if (module === require.main) {
     , { file: 'node-v9.0.0-test20170609cd40078f1f-darwin-x64.tar.xz' }
     , { file: 'node-v9.0.0-test20170609cd40078f1f-headers.tar.gz', type: 'headers' }
     , { file: 'node-v9.0.0-test20170609cd40078f1f-headers.tar.xz' }
+    , { file: 'win-arm/node.exe', type: 'win-arm-exe' }
+    , { file: 'node-v8.1.4-win-arm.7z', type: 'win-arm-7z' }
+    , { file: 'node-v8.1.4-win-arm.zip', type: 'win-arm-zip' }
+    , { file: 'node-v8.1.4-win-x64.7z', type: 'win-x64-7z' }
+    , { file: 'node-v8.1.4-win-x64.zip', type: 'win-x64-zip' }
+    , { file: 'node-v8.1.4-win-x86.7z', type: 'win-x86-7z' }
+    , { file: 'node-v8.1.4-win-x86.zip', type: 'win-x86-zip' }
   ]
 
   tests.forEach(function (test) {
