@@ -214,21 +214,21 @@ function fetchUvVersion (gitref, callback) {
           cachePut(gitref, 'uv', version)
           return callback(null, version)
         }
-      })
 
-      fetch(uvVersionUrl[3], gitref, function (err, rawData) {
-        if (err)
-          return callback(err)
+        fetch(uvVersionUrl[3], gitref, function (err, rawData) {
+          if (err)
+            return callback(err)
 
-        version = rawData.split('\n').map(function (line) {
-            return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
-          })
-          .filter(Boolean)
-          .map(function (m) { return m[1] })
-          .join('.')
+          version = rawData.split('\n').map(function (line) {
+              return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
+            })
+            .filter(Boolean)
+            .map(function (m) { return m[1] })
+            .join('.')
 
-        cachePut(gitref, 'uv', version)
-        callback(null, version)
+          cachePut(gitref, 'uv', version)
+          callback(null, version)
+        })
       })
     })
   })
