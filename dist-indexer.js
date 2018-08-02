@@ -27,6 +27,7 @@ const fs         = require('fs')
           `${githubContentUrl}/deps/uv/include/uv-version.h`
         , `${githubContentUrl}/deps/uv/src/version.c`
         , `${githubContentUrl}/deps/uv/include/uv.h`
+        , `${githubContentUrl}/deps/uv/include/uv/version.h`
       ]
     , sslVersionUrl    = [
           `${githubContentUrl}/deps/openssl/openssl/include/openssl/opensslv.h`
@@ -161,7 +162,6 @@ function fetchV8Version (gitref, callback) {
   })
 }
 
-
 function fetchUvVersion (gitref, callback) {
   var version = cacheGet(gitref, 'uv')
   if (version || (/\/v0\.([01234]\.\d+|5\.0)$/).test(gitref))
@@ -210,8 +210,25 @@ function fetchUvVersion (gitref, callback) {
           .map(function (m) { return m[1] })
           .join('.')
 
-        cachePut(gitref, 'uv', version)
-        callback(null, version)
+        if (version) {
+          cachePut(gitref, 'uv', version)
+          return callback(null, version)
+        }
+
+        fetch(uvVersionUrl[3], gitref, function (err, rawData) {
+          if (err)
+            return callback(err)
+
+          version = rawData.split('\n').map(function (line) {
+              return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
+            })
+            .filter(Boolean)
+            .map(function (m) { return m[1] })
+            .join('.')
+
+          cachePut(gitref, 'uv', version)
+          callback(null, version)
+        })
       })
     })
   })
