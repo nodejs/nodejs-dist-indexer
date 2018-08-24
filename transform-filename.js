@@ -11,6 +11,7 @@ const assert = require('assert')
         , 'linux-x64'        : 'linux-x64'
         , 'linux-x86'        : 'linux-x86'
         , 'linux-ppc64le'    : 'linux-ppc64le'
+        , 'linux-s390x'      : 'linux-s390x'
         , 'smartos-x64'      : 'smartos-x64'
         , 'smartos-x86'      : 'smartos-x86'
         , 'sunos-x64'        : 'sunos-x64'
@@ -148,6 +149,8 @@ if (module === require.main) {
     , { file: 'node-v8.1.4-win-x64.zip', type: 'win-x64-zip' }
     , { file: 'node-v8.1.4-win-x86.7z', type: 'win-x86-7z' }
     , { file: 'node-v8.1.4-win-x86.zip', type: 'win-x86-zip' }
+    , { file: 'node-v10.9.0-linux-s390x.tar.gz', type: 'linux-s390x'}
+    , { file: 'node-v10.9.0-linux-s390x.tar.xz'}
   ]
 
   tests.forEach(function (test) {
