@@ -39,6 +39,7 @@ const fs         = require('fs')
         , `${githubContentUrl}/src/node.h`
       ]
     , ltsVersionUrl    = `${githubContentUrl}/src/node_version.h`
+    , isSecurityUrl    = `${githubContentUrl}/src/node_version.h`
     , githubOptions    = { headers: {
           'accept': 'text/plain,application/vnd.github.v3.raw'
       } }
@@ -338,6 +339,26 @@ function fetchLtsVersion (gitref, callback) {
   })
 }
 
+function fetchIsSecurity (gitref, callback) {
+  var security = cacheGet(gitref, 'security')
+
+  if (security || security === false)
+    return setImmediate(callback.bind(null, null, security))
+
+  fetch(isSecurityUrl, gitref, function (err, rawData) {
+    if (err)
+      return callback(err)
+
+    var m = rawData.match(/^#define NODE_VERSION_IS_SECURITY_RELEASE 1$/m)
+    if (m) {
+      security = true
+    } else
+      security = false
+
+    cachePut(gitref, 'security', security)
+    callback(null, security)
+  })
+}
 
 function dirDate (dir, callback) {
   fs.readdir(path.join(argv.dist, dir), function (err, files) {
@@ -392,6 +413,7 @@ function inspectDir (dir, callback) {
     , zlibVersion
     , modVersion
     , ltsVersion
+    , isSecurity
     , date
 
   if (!gitref) {
@@ -412,7 +434,7 @@ function inspectDir (dir, callback) {
 
     files = _files
 
-    var done = after(8, afterAll)
+    var done = after(9, afterAll)
 
     dirDate(dir, function (err, _date) {
       if (err)
@@ -484,6 +506,15 @@ function inspectDir (dir, callback) {
       ltsVersion = version
       done()
     })
+
+    fetchIsSecurity (gitref, function (err, security) {
+      if (err) {
+        console.error(err)
+        console.error('(ignoring error fetching security for %s)', gitref)
+      }
+      isSecurity = security
+      done()
+    })
   })
 
   function afterAll (err) {
@@ -504,6 +535,7 @@ function inspectDir (dir, callback) {
       , openssl   : sslVersion
       , modules   : modVersion
       , lts       : ltsVersion
+      , security  : isSecurity
     })
   }
 }
@@ -533,7 +565,7 @@ function afterMap (err, dirs) {
   }
 
   jsonOut.write('[\n')
-  tabWrite('version', 'date', 'files', 'npm', 'v8', 'uv', 'zlib', 'openssl', 'modules', 'lts')
+  tabWrite('version', 'date', 'files', 'npm', 'v8', 'uv', 'zlib', 'openssl', 'modules', 'lts', 'security')
 
   dirs.forEach(function (dir, i) {
     jsonOut.write(JSON.stringify(dir) + (i != dirs.length - 1 ? ',\n' : '\n'))
@@ -548,6 +580,7 @@ function afterMap (err, dirs) {
       , dir.openssl
       , dir.modules
       , dir.lts
+      , dir.security
     )
   })
 
