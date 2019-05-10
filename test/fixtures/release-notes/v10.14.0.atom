@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/nodejs/node/commits/v10.14.0</id>
+  <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commits/v10.14.0"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/nodejs/node/commits/v10.14.0.atom"/>
+  <title>Recent Commits to node:v10.14.0</title>
+  <updated>2018-11-27T22:17:04Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/b7103135bc7987dee97e8795b0b38293d05fd842</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/b7103135bc7987dee97e8795b0b38293d05fd842"/>
+    <title>
+        2018-11-27, Version 10.14.0 &#39;Dubnium&#39; (LTS)
+    </title>
+    <updated>2018-11-27T22:17:04Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/495647?s=30&amp;v=4"/>
+    <author>
+      <name>rvagg</name>
+      <uri>https://github.com/rvagg</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;2018-11-27, Version 10.14.0 &amp;#39;Dubnium&amp;#39; (LTS)
+
+This is a security release. All Node.js users should consult the security
+release summary at:
+
+  https://nodejs.org/en/blog/vulnerability/november-2018-security-releases/
+
+for details on patched vulnerabilities.
+
+Fixes for the following CVEs are included in this release:
+
+  * Node.js: Denial of Service with large HTTP headers (CVE-2018-12121)
+  * Node.js: Slowloris HTTP Denial of Service (CVE-2018-12122 / Node.js)
+  * Node.js: Hostname spoofing in URL parser for javascript protocol
+    (CVE-2018-12123)
+  * OpenSSL: Timing vulnerability in DSA signature generation (CVE-2018-0734)
+  * OpenSSL: Timing vulnerability in ECDSA signature generation (CVE-2019-0735)
+
+Notable Changes:
+
+* deps: Upgrade to OpenSSL 1.1.0j, fixing CVE-2018-0734 and CVE-2019-0735
+* http:
+  * Headers received by HTTP servers must not exceed 8192 bytes in total to
+    prevent possible Denial of Service attacks. Reported by Trevor Norris.
+    (CVE-2018-12121 / Matteo Collina)
+  * A timeout of 40 seconds now applies to servers receiving HTTP headers. This
+    value can be adjusted with `server.headersTimeout`. Where headers are not
+    completely received within this period, the socket is destroyed on the next
+    received chunk. In conjunction with `server.setTimeout()`, this aids in
+    protecting against excessive resource retention and possible Denial of
+    Service. Reported by Jan Maybach (liebdich.com).
+* url: Fix a bug that would allow a hostname being spoofed when parsing URLs
+  with `url.parse()` with the `&amp;#39;javascript:&amp;#39;` protocol. Reported by
+  Martin Bajanik (kenticocloud.com). (CVE-2018-12123 / Matteo Collina)
+
+PR-URL: https://github.com/nodejs-private/node-private/pull/155/&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/8b1405ee014033d9a36873f65ca49be11f15a569</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/8b1405ee014033d9a36873f65ca49be11f15a569"/>
+    <title>
+        url: avoid hostname spoofing w/ javascript protocol
+    </title>
+    <updated>2018-11-27T04:11:44Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/52195?s=30&amp;v=4"/>
+    <author>
+      <name>mcollina</name>
+      <uri>https://github.com/mcollina</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;url: avoid hostname spoofing w/ javascript protocol
+
+CVE-2018-12123
+
+Fixes: https://github.com/nodejs-private/security/issues/205
+PR-URL: https://github.com/nodejs-private/node-private/pull/145
+Reviewed-By: Ben Noordhuis &amp;lt;info@bnoordhuis.nl&amp;gt;
+Reviewed-By: Michael Dawson &amp;lt;michael_dawson@ca.ibm.com&amp;gt;
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/eb43bc04b1390ce2506144b46d081e63f7a7d5b7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/eb43bc04b1390ce2506144b46d081e63f7a7d5b7"/>
+    <title>
+        http,https: protect against slow headers attack
+    </title>
+    <updated>2018-11-27T04:11:44Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/52195?s=30&amp;v=4"/>
+    <author>
+      <name>mcollina</name>
+      <uri>https://github.com/mcollina</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;http,https: protect against slow headers attack
+
+CVE-2018-12122
+
+An attacker can send a char/s within headers and exahust the resources
+(file descriptors) of a system even with a tight max header length
+protection. This PR destroys a socket if it has not received the headers
+in 40s.
+
+PR-URL: https://github.com/nodejs-private/node-private/pull/150
+Ref: https://github.com/nodejs-private/node-private/pull/144
+Reviewed-By: Sam Roberts &amp;lt;vieuxtech@gmail.com&amp;gt;
+Reviewed-By: Ben Noordhuis &amp;lt;info@bnoordhuis.nl&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/a8532d4d23304d8cc28c968e2eda519a546834ca</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/a8532d4d23304d8cc28c968e2eda519a546834ca"/>
+    <title>
+        deps,http: http_parser set max header size to 8KB
+    </title>
+    <updated>2018-11-27T04:11:44Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/52195?s=30&amp;v=4"/>
+    <author>
+      <name>mcollina</name>
+      <uri>https://github.com/mcollina</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps,http: http_parser set max header size to 8KB
+
+CVE-2018-12121
+
+PR-URL: https://github.com/nodejs-private/node-private/pull/143
+Ref: https://github.com/nodejs-private/security/issues/139
+Ref: https://github.com/nodejs-private/http-parser-private/pull/2
+Reviewed-By: Anatoli Papirovski &amp;lt;apapirovski@mac.com&amp;gt;
+Reviewed-By: Ben Noordhuis &amp;lt;info@bnoordhuis.nl&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/38ca8baf81a2caf05253718db6bf56e49543e8ef</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/38ca8baf81a2caf05253718db6bf56e49543e8ef"/>
+    <title>
+        deps: update openssl 1.1.0 upgrade docs
+    </title>
+    <updated>2018-11-24T10:42:20Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/17607?s=30&amp;v=4"/>
+    <author>
+      <name>sam-github</name>
+      <uri>https://github.com/sam-github</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: update openssl 1.1.0 upgrade docs
+
+PR-URL: https://github.com/nodejs/node/pull/24523
+Reviewed-By: Shigeki Ohtsu &amp;lt;ohtsu@ohtsu.org&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/241ba81a5b4805324e8acfd1781ed607278784ce</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/241ba81a5b4805324e8acfd1781ed607278784ce"/>
+    <title>
+        deps: update archs files for OpenSSL-1.1.0
+    </title>
+    <updated>2018-11-24T10:42:20Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/17607?s=30&amp;v=4"/>
+    <author>
+      <name>sam-github</name>
+      <uri>https://github.com/sam-github</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: update archs files for OpenSSL-1.1.0
+
+`cd deps/openssl/config; make` updates all archs dependant files.
+
+PR-URL: https://github.com/nodejs/node/pull/24523
+Reviewed-By: Shigeki Ohtsu &amp;lt;ohtsu@ohtsu.org&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/acc40efa905c73fb7475ca5008d65dbdcd5f4867</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/acc40efa905c73fb7475ca5008d65dbdcd5f4867"/>
+    <title>
+        deps: add s390 asm rules for OpenSSL-1.1.0
+    </title>
+    <updated>2018-11-24T10:42:20Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars3.githubusercontent.com/u/782880?s=30&amp;v=4"/>
+    <author>
+      <name>shigeki</name>
+      <uri>https://github.com/shigeki</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: add s390 asm rules for OpenSSL-1.1.0
+
+This is a floating patch against OpenSSL-1.1.0 to generate asm files
+with Makefile rules and it is to be submitted to the upstream.
+
+Fixes: https://github.com/nodejs/node/issues/4270
+PR-URL: https://github.com/nodejs/node/pull/19794
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;
+Reviewed-By: Michael Dawson &amp;lt;michael_dawson@ca.ibm.com&amp;gt;
+
+PR-URL: https://github.com/nodejs/node/pull/24523
+Reviewed-By: Shigeki Ohtsu &amp;lt;ohtsu@ohtsu.org&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/7efd184bb16ecf1b93fe9a5b9300e2353149d330</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/7efd184bb16ecf1b93fe9a5b9300e2353149d330"/>
+    <title>
+        deps: upgrade openssl sources to 1.1.0j
+    </title>
+    <updated>2018-11-24T10:42:20Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/17607?s=30&amp;v=4"/>
+    <author>
+      <name>sam-github</name>
+      <uri>https://github.com/sam-github</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: upgrade openssl sources to 1.1.0j
+
+This updates all sources in deps/openssl/openssl with openssl-1.1.0j.
+
+PR-URL: https://github.com/nodejs/node/pull/24523
+Reviewed-By: Shigeki Ohtsu &amp;lt;ohtsu@ohtsu.org&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/4febb6c767787dfb8c56d9c80812cd8a4baa53b6</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/4febb6c767787dfb8c56d9c80812cd8a4baa53b6"/>
+    <title>
+        Working on v10.13.1
+    </title>
+    <updated>2018-10-30T08:42:12Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/498775?s=30&amp;v=4"/>
+    <author>
+      <name>MylesBorins</name>
+      <uri>https://github.com/MylesBorins</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Working on v10.13.1
+
+PR-URL: https://github.com/nodejs/node/pull/23831&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/ab4af087e83d91a46354d765306d3543b1d85423</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/ab4af087e83d91a46354d765306d3543b1d85423"/>
+    <title>
+        2018-10-30 Version 10.13.0 &#39;Dubnium&#39; (LTS)
+    </title>
+    <updated>2018-10-30T06:20:26Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/498775?s=30&amp;v=4"/>
+    <author>
+      <name>MylesBorins</name>
+      <uri>https://github.com/MylesBorins</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;2018-10-30 Version 10.13.0 &amp;#39;Dubnium&amp;#39; (LTS)
+
+This release marks the transition of Node.js 10.x into Long Term
+Support (LTS) with the codename &amp;#39;Dubnium&amp;#39;. The 10.x release line
+now moves in to &amp;quot;Active LTS&amp;quot; and will remain so until April 2020.
+After that time it will move in to &amp;quot;Maintenance&amp;quot; until end of
+life in April 2021.
+
+Notable Changes:
+
+This release only includes minimal changes necessary to fix known
+regressions prior to LTS.
+
+PR-URL: https://github.com/nodejs/node/pull/23831&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/2ba60100820afe9b01f0d3dcee46453ce26db7e0</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/2ba60100820afe9b01f0d3dcee46453ce26db7e0"/>
+    <title>
+        buffer: fix crash for invalid index types
+    </title>
+    <updated>2018-10-29T19:39:48Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars3.githubusercontent.com/u/899444?s=30&amp;v=4"/>
+    <author>
+      <name>addaleax</name>
+      <uri>https://github.com/addaleax</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;buffer: fix crash for invalid index types
+
+2555cb4a4049dc4c41d8a2f4ce50909cc0a12a4a introduced a crash
+when a non-number value was passed to `ParseArrayIndex()`.
+
+We do not always have JS typechecking for that in place, though.
+This returns back to the previous behavior of coercing values
+to integers, which is certainly questionable.
+
+Refs: https://github.com/nodejs/node/pull/22129
+Fixes: https://github.com/nodejs/node/issues/23668&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/2cd68be69d7a60e8b419085e42a0cf7bfcd6ea2f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/2cd68be69d7a60e8b419085e42a0cf7bfcd6ea2f"/>
+    <title>
+        build: spawn `make test-ci` with `-j1`
+    </title>
+    <updated>2018-10-29T19:39:48Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/96947?s=30&amp;v=4"/>
+    <author>
+      <name>refack</name>
+      <uri>https://github.com/refack</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;build: spawn `make test-ci` with `-j1`
+
+All the sub targets have internal parallelism, so no performance loss.
+Also `make` doesn&amp;#39;t to a good enough job of combining the output
+streams, or eliminate races.
+
+PR-URL: https://github.com/nodejs/node/pull/23733
+Fixes: https://github.com/nodejs/node/issues/22006
+Reviewed-By: Richard Lau &amp;lt;riclau@uk.ibm.com&amp;gt;
+Reviewed-By: Joyee Cheung &amp;lt;joyeec9h3@gmail.com&amp;gt;
+Reviewed-By: Matheus Marchini &amp;lt;mat@mmarchini.me&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/1003f4c97531cd3e44c635da83d0cbe7be8d6048</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/1003f4c97531cd3e44c635da83d0cbe7be8d6048"/>
+    <title>
+        deps: fix wrong default for v8 handle zapping
+    </title>
+    <updated>2018-10-25T15:53:25Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/96947?s=30&amp;v=4"/>
+    <author>
+      <name>refack</name>
+      <uri>https://github.com/refack</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: fix wrong default for v8 handle zapping
+
+PR-URL: https://github.com/nodejs/node/pull/23801
+Fixes: https://github.com/nodejs/node/issues/23796
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;
+Reviewed-By: Michaël Zasso &amp;lt;targos@protonmail.com&amp;gt;
+Reviewed-By: Matheus Marchini &amp;lt;mat@mmarchini.me&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/b66f46cb023a09cc77957c9360ae2cf18c4db188</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/b66f46cb023a09cc77957c9360ae2cf18c4db188"/>
+    <title>
+        Working on v10.12.1
+    </title>
+    <updated>2018-10-10T21:13:29Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/2352663?s=30&amp;v=4"/>
+    <author>
+      <name>targos</name>
+      <uri>https://github.com/targos</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Working on v10.12.1
+
+PR-URL: https://github.com/nodejs/node/pull/23313&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/4a276cc2a960b3f9a138ac3a99c9249a63b4d472</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/4a276cc2a960b3f9a138ac3a99c9249a63b4d472"/>
+    <title>
+        2018-10-10, Version 10.12.0 (Current)
+    </title>
+    <updated>2018-10-10T16:10:08Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/2352663?s=30&amp;v=4"/>
+    <author>
+      <name>targos</name>
+      <uri>https://github.com/targos</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;2018-10-10, Version 10.12.0 (Current)
+
+Notable changes:
+
+* assert
+  * The diff output is now a tiny bit improved by sorting object
+    properties when inspecting the values that are compared with each
+    other. https://github.com/nodejs/node/pull/22788
+* cli
+  * The options parser now normalizes `_` to `-` in all multi-word
+    command-line flags, e.g. `--no_warnings` has the same effect as
+    `--no-warnings`. https://github.com/nodejs/node/pull/23020
+  * Added bash completion for the `node` binary. To generate a bash
+    completion script, run `node --completion-bash`. The output can be
+    saved to a file which can be sourced to enable completion.
+    https://github.com/nodejs/node/pull/20713
+* crypto
+  * Added support for PEM-level encryption.
+    https://github.com/nodejs/node/pull/23151
+  * Added an API asymmetric key pair generation. The new methods
+    `crypto.generateKeyPair` and `crypto.generateKeyPairSync` can be
+    used to generate public and private key pairs. The API supports
+    RSA, DSA and EC and a variety of key encodings (both PEM and DER).
+    https://github.com/nodejs/node/pull/22660
+* fs
+  * Added a `recursive` option to `fs.mkdir` and `fs.mkdirSync`. If
+    this option is set to true, non-existing parent folders will be
+    automatically created. https://github.com/nodejs/node/pull/21875
+* http2
+  * Added a `&amp;#39;ping&amp;#39;` event to `Http2Session` that is emitted whenever a
+    non-ack `PING` is received.
+    https://github.com/nodejs/node/pull/23009
+  * Added support for the `ORIGIN` frame.
+    https://github.com/nodejs/node/pull/22956
+  * Updated nghttp2 to 1.34.0. This adds RFC 8441 extended connect
+    protocol support to allow use of WebSockets over HTTP/2.
+    https://github.com/nodejs/node/pull/23284
+* module
+  * Added `module.createRequireFromPath(filename)`. This new method can
+    be used to create a custom require function that will resolve
+    modules relative to the filename path.
+    https://github.com/nodejs/node/pull/19360
+* process
+  * Added a `&amp;#39;multipleResolves&amp;#39;` process event that is emitted whenever
+    a `Promise` is attempted to be resolved multiple times, e.g. if the
+    `resolve` and `reject` functions are both called in a `Promise`
+    executor. https://github.com/nodejs/node/pull/22218
+* url
+  * Added `url.fileURLToPath(url)` and `url.pathToFileURL(path)`. These
+    methods can be used to correctly convert between file: URLs and
+    absolute paths. https://github.com/nodejs/node/pull/22506
+* util
+  * Added the `sorted` option to `util.inspect()`. If set to `true`,
+    all properties of an object and Set and Map entries will be sorted
+    in the returned string. If set to a function, it is used as a
+    compare function. https://github.com/nodejs/node/pull/22788
+  * The `util.instpect.custom` symbol is now defined in the global
+    symbol registry as `Symbol.for(&amp;#39;nodejs.util.inspect.custom&amp;#39;)`.
+    https://github.com/nodejs/node/pull/20857
+  * Added support for `BigInt` numbers in `util.format()`.
+    https://github.com/nodejs/node/pull/22097
+* V8 API
+  * A number of V8 C++ APIs have been marked as deprecated since they
+    have been removed in the upstream repository. Replacement APIs
+    are added where necessary. https://github.com/nodejs/node/pull/23159
+* Windows
+  * The Windows msi installer now provides an option to automatically
+    install the tools required to build native modules.
+    https://github.com/nodejs/node/pull/22645
+* Workers
+  * Debugging support for Workers using the DevTools protocol has been
+    implemented. https://github.com/nodejs/node/pull/21364
+  * The public `inspector` module is now enabled in Workers.
+    https://github.com/nodejs/node/pull/22769
+* Added new collaborators:
+  * digitalinfinity - Hitesh Kanwathirtha
+
+PR-URL: https://github.com/nodejs/node/pull/23313&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/e6484c2c1193d8067e01477497b7dfbb4d8ccab3</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/e6484c2c1193d8067e01477497b7dfbb4d8ccab3"/>
+    <title>
+        build: restore js2c direct dependency on config.gypi
+    </title>
+    <updated>2018-10-10T15:40:21Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/96947?s=30&amp;v=4"/>
+    <author>
+      <name>refack</name>
+      <uri>https://github.com/refack</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;build: restore js2c direct dependency on config.gypi
+
+PR-URL: https://github.com/nodejs/node/pull/23355
+Fixes: https://github.com/nodejs/node/issues/23352
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;
+Reviewed-By: Joyee Cheung &amp;lt;joyeec9h3@gmail.com&amp;gt;
+Reviewed-By: Richard Lau &amp;lt;riclau@uk.ibm.com&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/cd69e1b6c3e07946b53548b72228c432e2993a79</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/cd69e1b6c3e07946b53548b72228c432e2993a79"/>
+    <title>
+        src: fix ToObject() usage in node_http_parser.cc
+    </title>
+    <updated>2018-10-10T15:40:21Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/2512748?s=30&amp;v=4"/>
+    <author>
+      <name>cjihrig</name>
+      <uri>https://github.com/cjihrig</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;src: fix ToObject() usage in node_http_parser.cc
+
+PR-URL: https://github.com/nodejs/node/pull/23314
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;
+Reviewed-By: Sakthipriyan Vairamani &amp;lt;thechargingvolcano@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/5228ec4410605651192137890da5c41ac5755bcc</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/5228ec4410605651192137890da5c41ac5755bcc"/>
+    <title>
+        src: fix ToObject() usage in exceptions.cc
+    </title>
+    <updated>2018-10-10T15:40:21Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/2512748?s=30&amp;v=4"/>
+    <author>
+      <name>cjihrig</name>
+      <uri>https://github.com/cjihrig</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;src: fix ToObject() usage in exceptions.cc
+
+PR-URL: https://github.com/nodejs/node/pull/23314
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;
+Reviewed-By: Sakthipriyan Vairamani &amp;lt;thechargingvolcano@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/c4aa0331c108f55c5a56193fac0249a27767de03</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/c4aa0331c108f55c5a56193fac0249a27767de03"/>
+    <title>
+        build: make configure script verbose by default
+    </title>
+    <updated>2018-10-10T15:37:07Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/2352663?s=30&amp;v=4"/>
+    <author>
+      <name>targos</name>
+      <uri>https://github.com/targos</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;build: make configure script verbose by default
+
+The change that added the --verbose flag was supposed to be
+semver-major but already landed in a 10.x release.
+
+Refs: https://github.com/nodejs/node/pull/22450
+
+PR-URL: https://github.com/nodejs/node/pull/23408
+Reviewed-By: Colin Ihrig &amp;lt;cjihrig@gmail.com&amp;gt;
+Reviewed-By: Rich Trott &amp;lt;rtrott@gmail.com&amp;gt;
+Reviewed-By: Refael Ackermann &amp;lt;refack@gmail.com&amp;gt;
+Reviewed-By: Richard Lau &amp;lt;riclau@uk.ibm.com&amp;gt;
+Reviewed-By: Sakthipriyan Vairamani &amp;lt;thechargingvolcano@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/a65bb42551b635b3bb948ab1c9f7064da1b77554</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/a65bb42551b635b3bb948ab1c9f7064da1b77554"/>
+    <title>
+        net: use connect() instead of connect.call()
+    </title>
+    <updated>2018-10-10T13:42:52Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/327019?s=30&amp;v=4"/>
+    <author>
+      <name>JacksonTian</name>
+      <uri>https://github.com/JacksonTian</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;net: use connect() instead of connect.call()
+
+Use socket.connect() directly.
+
+PR-URL: https://github.com/nodejs/node/pull/23289
+Reviewed-By: Luigi Pinca &amp;lt;luigipinca@gmail.com&amp;gt;
+Reviewed-By: Sakthipriyan Vairamani &amp;lt;thechargingvolcano@gmail.com&amp;gt;
+Reviewed-By: Trivikram Kamat &amp;lt;trivikr.dev@gmail.com&amp;gt;
+Reviewed-By: Colin Ihrig &amp;lt;cjihrig@gmail.com&amp;gt;
+Reviewed-By: Thomas Watson &amp;lt;w@tson.dk&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+</feed>

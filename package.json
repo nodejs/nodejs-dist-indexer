@@ -18,7 +18,7 @@
     "semver": "~5.5.1"
   },
   "scripts": {
-    "test": "node ls-types.js && node transform-filename.js && node decode-ref.js"
+    "test": "node ls-types.js && node transform-filename.js && node decode-ref.js && node is-security-release.js"
   },
   "bin": {
     "nodejs-dist-indexer": "./dist-indexer.js",

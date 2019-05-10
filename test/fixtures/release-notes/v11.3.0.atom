@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/nodejs/node/commits/v11.3.0</id>
+  <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commits/v11.3.0"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/nodejs/node/commits/v11.3.0.atom"/>
+  <title>Recent Commits to node:v11.3.0</title>
+  <updated>2018-11-27T04:36:42Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/00fb73a72eff0e90d0f85b95dbcfc3c21f89cff9</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/00fb73a72eff0e90d0f85b95dbcfc3c21f89cff9"/>
+    <title>
+        2018-11-27, Version 11.3.0 (Current)
+    </title>
+    <updated>2018-11-27T04:36:42Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/495647?s=30&amp;v=4"/>
+    <author>
+      <name>rvagg</name>
+      <uri>https://github.com/rvagg</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;2018-11-27, Version 11.3.0 (Current)
+
+This is a security release. All Node.js users should consult the security
+release summary at:
+
+https://nodejs.org/en/blog/vulnerability/november-2018-security-releases/
+
+for details on patched vulnerabilities.
+
+Fixes for the following CVEs are included in this release:
+
+  * Node.js: Denial of Service with large HTTP headers (CVE-2018-12121)
+  * Node.js: Slowloris HTTP Denial of Service (CVE-2018-12122 / Node.js)
+  * Node.js: Hostname spoofing in URL parser for javascript protocol
+    (CVE-2018-12123)
+  * OpenSSL: Timing vulnerability in DSA signature generation (CVE-2018-0734)
+  * OpenSSL: Timing vulnerability in ECDSA signature generation (CVE-2019-0735)
+
+Notable Changes:
+
+* deps: Upgrade to OpenSSL 1.1.0j, fixing CVE-2018-0734 and CVE-2019-0735
+* http:
+  * Headers received by HTTP servers must not exceed 8192 bytes in total to
+    prevent possible Denial of Service attacks. Reported by Trevor Norris.
+    (CVE-2018-12121 / Matteo Collina)
+  * A timeout of 40 seconds now applies to servers receiving HTTP headers. This
+    value can be adjusted with `server.headersTimeout`. Where headers are not
+    completely received within this period, the socket is destroyed on the next
+    received chunk. In conjunction with `server.setTimeout()`, this aids in
+    protecting against excessive resource retention and possible Denial of
+    Service. Reported by Jan Maybach (liebdich.com).
+* url: Fix a bug that would allow a hostname being spoofed when parsing URLs
+  with `url.parse()` with the `&amp;#39;javascript:&amp;#39;` protocol. Reported by
+  Martin Bajanik (kenticocloud.com). (CVE-2018-12123 / Matteo Collina)
+
+PR-URL: https://github.com/nodejs-private/node-private/pull/156/&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/d7504324e1dfc0ac3c6849c2913ee58faca6386a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/d7504324e1dfc0ac3c6849c2913ee58faca6386a"/>
+    <title>
+        url: avoid hostname spoofing w/ javascript protocol
+    </title>
+    <updated>2018-11-27T04:30:17Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/52195?s=30&amp;v=4"/>
+    <author>
+      <name>mcollina</name>
+      <uri>https://github.com/mcollina</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;url: avoid hostname spoofing w/ javascript protocol
+
+CVE-2018-12123
+
+Fixes: https://github.com/nodejs-private/security/issues/205
+PR-URL: https://github.com/nodejs-private/node-private/pull/145
+Reviewed-By: Ben Noordhuis &amp;lt;info@bnoordhuis.nl&amp;gt;
+Reviewed-By: Michael Dawson &amp;lt;michael_dawson@ca.ibm.com&amp;gt;
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/315ee2e626f6134f372d8034d9b94b73717705c7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/315ee2e626f6134f372d8034d9b94b73717705c7"/>
+    <title>
+        http,https: protect against slow headers attack
+    </title>
+    <updated>2018-11-27T04:30:17Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/52195?s=30&amp;v=4"/>
+    <author>
+      <name>mcollina</name>
+      <uri>https://github.com/mcollina</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;http,https: protect against slow headers attack
+
+CVE-2018-12122
+
+An attacker can send a char/s within headers and exahust the resources
+(file descriptors) of a system even with a tight max header length
+protection. This PR destroys a socket if it has not received the headers
+in 40s.
+
+PR-URL: https://github.com/nodejs-private/node-private/pull/144
+Reviewed-By: Sam Roberts &amp;lt;vieuxtech@gmail.com&amp;gt;
+Reviewed-By: Ben Noordhuis &amp;lt;info@bnoordhuis.nl&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/4ecbd3bdaad94c33a03bf390462706ce1952c2c7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/4ecbd3bdaad94c33a03bf390462706ce1952c2c7"/>
+    <title>
+        http: reset headers_nread_ on llhttp parser reuse
+    </title>
+    <updated>2018-11-27T04:29:40Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/495647?s=30&amp;v=4"/>
+    <author>
+      <name>rvagg</name>
+      <uri>https://github.com/rvagg</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;http: reset headers_nread_ on llhttp parser reuse
+
+PR-URL: https://github.com/nodejs-private/node-private/pull/149
+Reviewed-By: Fedor Indutny &amp;lt;fedor@indutny.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/04e0620597c30d19a0b4fd4ed04337619d49fb43</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/04e0620597c30d19a0b4fd4ed04337619d49fb43"/>
+    <title>
+        http: fix header limit errors and test for llhttp
+    </title>
+    <updated>2018-11-27T04:24:30Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars3.githubusercontent.com/u/238531?s=30&amp;v=4"/>
+    <author>
+      <name>indutny</name>
+      <uri>https://github.com/indutny</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;http: fix header limit errors and test for llhttp
+
+Ref: https://github.com/nodejs-private/node-private/pull/143
+PR-URL: https://github.com/nodejs-private/node-private/pull/149
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/a2b8aba23cffe392495736da373baf506f88da52</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/a2b8aba23cffe392495736da373baf506f88da52"/>
+    <title>
+        deps,http: llhttp set max header size to 8KB
+    </title>
+    <updated>2018-11-27T04:24:30Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/495647?s=30&amp;v=4"/>
+    <author>
+      <name>rvagg</name>
+      <uri>https://github.com/rvagg</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps,http: llhttp set max header size to 8KB
+
+CVE-2018-12121
+
+As per nodejs-private/node-private#149 for http_parse but for llhttp
+
+Ref: https://github.com/nodejs-private/node-private/pull/143
+PR-URL: https://github.com/nodejs-private/node-private/pull/149
+Reviewed-By: Matteo Collina &amp;lt;hello@matteocollina.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/74e01d0020ec255673e17353a1004a8ea375fff4</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/74e01d0020ec255673e17353a1004a8ea375fff4"/>
+    <title>
+        deps,http: http_parser set max header size to 8KB
+    </title>
+    <updated>2018-11-27T04:24:30Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/52195?s=30&amp;v=4"/>
+    <author>
+      <name>mcollina</name>
+      <uri>https://github.com/mcollina</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps,http: http_parser set max header size to 8KB
+
+CVE-2018-12121
+
+PR-URL: https://github.com/nodejs-private/node-private/pull/143
+Ref: https://github.com/nodejs-private/security/issues/139
+Ref: https://github.com/nodejs-private/http-parser-private/pull/2
+Reviewed-By: Anatoli Papirovski &amp;lt;apapirovski@mac.com&amp;gt;
+Reviewed-By: Ben Noordhuis &amp;lt;info@bnoordhuis.nl&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/8f191f37596333ce4e7f9de8a8d839a576c9ca9f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/8f191f37596333ce4e7f9de8a8d839a576c9ca9f"/>
+    <title>
+        deps: update openssl 1.1.0 upgrade docs
+    </title>
+    <updated>2018-11-25T09:49:51Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/17607?s=30&amp;v=4"/>
+    <author>
+      <name>sam-github</name>
+      <uri>https://github.com/sam-github</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: update openssl 1.1.0 upgrade docs
+
+PR-URL: https://github.com/nodejs/node/pull/24523
+Reviewed-By: Shigeki Ohtsu &amp;lt;ohtsu@ohtsu.org&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/f20ac47d7a5738a43aa0726c1cd8d2873cfc7423</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/f20ac47d7a5738a43aa0726c1cd8d2873cfc7423"/>
+    <title>
+        deps: update archs files for OpenSSL-1.1.0
+    </title>
+    <updated>2018-11-25T09:49:51Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/17607?s=30&amp;v=4"/>
+    <author>
+      <name>sam-github</name>
+      <uri>https://github.com/sam-github</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: update archs files for OpenSSL-1.1.0
+
+`cd deps/openssl/config; make` updates all archs dependant files.
+
+PR-URL: https://github.com/nodejs/node/pull/24523
+Reviewed-By: Shigeki Ohtsu &amp;lt;ohtsu@ohtsu.org&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/8248d227b76fc3c4bdf0abf91446b375202dc745</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/8248d227b76fc3c4bdf0abf91446b375202dc745"/>
+    <title>
+        deps: add s390 asm rules for OpenSSL-1.1.0
+    </title>
+    <updated>2018-11-25T09:49:51Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars3.githubusercontent.com/u/782880?s=30&amp;v=4"/>
+    <author>
+      <name>shigeki</name>
+      <uri>https://github.com/shigeki</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: add s390 asm rules for OpenSSL-1.1.0
+
+This is a floating patch against OpenSSL-1.1.0 to generate asm files
+with Makefile rules and it is to be submitted to the upstream.
+
+Fixes: https://github.com/nodejs/node/issues/4270
+PR-URL: https://github.com/nodejs/node/pull/19794
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;
+Reviewed-By: Michael Dawson &amp;lt;michael_dawson@ca.ibm.com&amp;gt;
+
+PR-URL: https://github.com/nodejs/node/pull/24523
+Reviewed-By: Shigeki Ohtsu &amp;lt;ohtsu@ohtsu.org&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/65d03f018008d28279c85e5a78712ad35930368a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/65d03f018008d28279c85e5a78712ad35930368a"/>
+    <title>
+        deps: upgrade openssl sources to 1.1.0j
+    </title>
+    <updated>2018-11-25T09:49:51Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/17607?s=30&amp;v=4"/>
+    <author>
+      <name>sam-github</name>
+      <uri>https://github.com/sam-github</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;deps: upgrade openssl sources to 1.1.0j
+
+This updates all sources in deps/openssl/openssl with openssl-1.1.0j.
+
+PR-URL: https://github.com/nodejs/node/pull/24523
+Reviewed-By: Shigeki Ohtsu &amp;lt;ohtsu@ohtsu.org&amp;gt;
+Reviewed-By: Daniel Bevenius &amp;lt;daniel.bevenius@gmail.com&amp;gt;
+Reviewed-By: Rod Vagg &amp;lt;rod@vagg.org&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/fbe63ab15b68f3ebf07891e3014f7a0138bd323e</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/fbe63ab15b68f3ebf07891e3014f7a0138bd323e"/>
+    <title>
+        Working on v11.2.1
+    </title>
+    <updated>2018-11-15T21:13:13Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/2352663?s=30&amp;v=4"/>
+    <author>
+      <name>targos</name>
+      <uri>https://github.com/targos</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Working on v11.2.1
+
+PR-URL: https://github.com/nodejs/node/pull/24350&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/a19e1aba38d4bd761b892b7384c457c6377e942c</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/a19e1aba38d4bd761b892b7384c457c6377e942c"/>
+    <title>
+        2018-11-15, Version 11.2.0 (Current)
+    </title>
+    <updated>2018-11-15T19:20:37Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/8822573?s=30&amp;v=4"/>
+    <author>
+      <name>BridgeAR</name>
+      <uri>https://github.com/BridgeAR</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;2018-11-15, Version 11.2.0 (Current)
+
+Notable changes:
+
+* deps:
+  * A new experimental HTTP parser (`llhttp`) is now supported.
+    https://github.com/nodejs/node/pull/24059
+* timers:
+  * Fixed an issue that could cause setTimeout to stop working as
+    expected. https://github.com/nodejs/node/pull/24322
+* Windows
+  * A crashing process will now show the names of stack frames if the
+    node.pdb file is available.
+    https://github.com/nodejs/node/pull/23822
+  * Continued effort to improve the installer&amp;#39;s new stage that installs
+    native build tools.
+    https://github.com/nodejs/node/pull/23987,
+    https://github.com/nodejs/node/pull/24348
+  * child_process:
+    * On Windows the `windowsHide` option default was restored to
+      `false`. This means `detached` child processes and GUI apps will
+      once again start in a new window.
+      https://github.com/nodejs/node/pull/24034
+* Added new collaborators:
+  * [oyyd](https://github.com/oyyd) - Ouyang Yadong.
+    https://github.com/nodejs/node/pull/24300
+  * [psmarshall](https://github.com/psmarshall) - Peter Marshall.
+    https://github.com/nodejs/node/pull/24170
+  * [shisama](https://github.com/shisama) - Masashi Hirano.
+    https://github.com/nodejs/node/pull/24136&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/10edc4f186f7b837708df1e805071fd923c382f0</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/10edc4f186f7b837708df1e805071fd923c382f0"/>
+    <title>
+        net: always invoke after-write callback
+    </title>
+    <updated>2018-11-15T17:56:05Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars3.githubusercontent.com/u/899444?s=30&amp;v=4"/>
+    <author>
+      <name>addaleax</name>
+      <uri>https://github.com/addaleax</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;net: always invoke after-write callback
+
+This is part of the streams API contract, and aligns
+network sockets with other streams in this respect.
+
+PR-URL: https://github.com/nodejs/node/pull/24291
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;
+Reviewed-By: Luigi Pinca &amp;lt;luigipinca@gmail.com&amp;gt;
+Reviewed-By: Benjamin Gruenbaum &amp;lt;benjamingr@gmail.com&amp;gt;
+Reviewed-By: Colin Ihrig &amp;lt;cjihrig@gmail.com&amp;gt;
+Reviewed-By: Weijia Wang &amp;lt;starkwang@126.com&amp;gt;
+Reviewed-By: Matteo Collina &amp;lt;matteo.collina@gmail.com&amp;gt;
+Reviewed-By: Ruben Bridgewater &amp;lt;ruben@bridgewater.de&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/eeb5cc63052c762b3058594d1ba29f739d35986f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/eeb5cc63052c762b3058594d1ba29f739d35986f"/>
+    <title>
+        test: add typeerror for vm/compileFunction params
+    </title>
+    <updated>2018-11-15T17:56:05Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars3.githubusercontent.com/u/10720586?s=30&amp;v=4"/>
+    <author>
+      <name>dYale</name>
+      <uri>https://github.com/dYale</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;test: add typeerror for vm/compileFunction params
+
+PR-URL: https://github.com/nodejs/node/pull/24179
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;
+Reviewed-By: Joyee Cheung &amp;lt;joyeec9h3@gmail.com&amp;gt;
+Reviewed-By: Ruben Bridgewater &amp;lt;ruben@bridgewater.de&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/5ca0cf7ae6477eb207998083b90f74d7469c7d5d</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/5ca0cf7ae6477eb207998083b90f74d7469c7d5d"/>
+    <title>
+        lib: improved conditional check in zlib
+    </title>
+    <updated>2018-11-15T17:56:04Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars3.githubusercontent.com/u/10720586?s=30&amp;v=4"/>
+    <author>
+      <name>dYale</name>
+      <uri>https://github.com/dYale</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;lib: improved conditional check in zlib
+
+PR-URL: https://github.com/nodejs/node/pull/24190
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;
+Reviewed-By: Ruben Bridgewater &amp;lt;ruben@bridgewater.de&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/5b9ef11e35e551a101d970dbdbb45618267da77c</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/5b9ef11e35e551a101d970dbdbb45618267da77c"/>
+    <title>
+        timers: fix priority queue removeAt
+    </title>
+    <updated>2018-11-15T17:56:04Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/20809?s=30&amp;v=4"/>
+    <author>
+      <name>apapirovski</name>
+      <uri>https://github.com/apapirovski</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;timers: fix priority queue removeAt
+
+PR-URL: https://github.com/nodejs/node/pull/24322
+Fixes: https://github.com/nodejs/node/issues/24320
+Fixes: https://github.com/nodejs/node/issues/24362
+Reviewed-By: Colin Ihrig &amp;lt;cjihrig@gmail.com&amp;gt;
+Reviewed-By: Ruben Bridgewater &amp;lt;ruben@bridgewater.de&amp;gt;
+Reviewed-By: Matteo Collina &amp;lt;matteo.collina@gmail.com&amp;gt;
+Reviewed-By: Franziska Hinkelmann &amp;lt;franziska.hinkelmann@gmail.com&amp;gt;
+Reviewed-By: Benjamin Gruenbaum &amp;lt;benjamingr@gmail.com&amp;gt;
+Reviewed-By: Weijia Wang &amp;lt;starkwang@126.com&amp;gt;
+Reviewed-By: Jeremiah Senkpiel &amp;lt;fishrock123@rocketmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/dc26247e69d1ebc61c86b42c027f70da917202ce</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/dc26247e69d1ebc61c86b42c027f70da917202ce"/>
+    <title>
+        test: deep object to table not covered
+    </title>
+    <updated>2018-11-15T15:12:26Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/2674679?s=30&amp;v=4"/>
+    <author>
+      <name>ovhemert</name>
+      <uri>https://github.com/ovhemert</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;test: deep object to table not covered
+
+PR-URL: https://github.com/nodejs/node/pull/24257
+Reviewed-By: Weijia Wang &amp;lt;starkwang@126.com&amp;gt;
+Reviewed-By: James M Snell &amp;lt;jasnell@gmail.com&amp;gt;
+Reviewed-By: Luigi Pinca &amp;lt;luigipinca@gmail.com&amp;gt;
+Reviewed-By: Ruben Bridgewater &amp;lt;ruben@bridgewater.de&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/b7aded3300269bc36d1a14b474c4a85e185189d4</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/b7aded3300269bc36d1a14b474c4a85e185189d4"/>
+    <title>
+        src: compile native modules and their code cache in C++
+    </title>
+    <updated>2018-11-15T15:12:26Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars0.githubusercontent.com/u/4299420?s=30&amp;v=4"/>
+    <author>
+      <name>joyeecheung</name>
+      <uri>https://github.com/joyeecheung</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;src: compile native modules and their code cache in C++
+
+This patch refactors out a part of NativeModule.prototype.compile
+(in JS land) into a C++ NativeModule class, this enables a
+couple of possibilities:
+
+1. By moving the code to the C++ land, we have more opportunity
+  to specialize the compilation process of the native modules
+  (e.g. compilation options, code cache) that is orthogonal to
+  how user land modules are compiled
+2. We can reuse the code to compile bootstrappers and context
+  fixers and enable them to be compiled with the code cache later,
+  since they are not loaded by NativeModule in the JS land their
+  caching must be done in C++.
+3. Since there is no need to pass the static data to JS for
+  compilation anymore, this enables us to use
+  (std::map&amp;lt;std::string, const char*&amp;gt;) in the generated
+  node_code_cache.cc and node_javascript.cc later, and scope
+  every actual access to the source of native modules to a
+  std::map lookup instead of a lookup on a v8::Object in
+  dictionary mode.
+
+This patch also refactor the code cache generator and tests
+a bit and trace the `withCodeCache` and `withoutCodeCache`
+in a Set instead of an Array, and makes sure that all the cachable
+builtins are tested.
+
+PR-URL: https://github.com/nodejs/node/pull/24221
+Reviewed-By: Refael Ackermann &amp;lt;refack@gmail.com&amp;gt;
+Reviewed-By: Anna Henningsen &amp;lt;anna@addaleax.net&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/4709fe676d6c49b075de9368d3180a6e5104aee3</id>
+    <link type="text/html" rel="alternate" href="https://github.com/nodejs/node/commit/4709fe676d6c49b075de9368d3180a6e5104aee3"/>
+    <title>
+        win: add customization warning to tools script
+    </title>
+    <updated>2018-11-15T15:12:26Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/134460?s=30&amp;v=4"/>
+    <author>
+      <name>joaocgreis</name>
+      <uri>https://github.com/joaocgreis</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;win: add customization warning to tools script
+
+PR-URL: https://github.com/nodejs/node/pull/24348
+Reviewed-By: Refael Ackermann &amp;lt;refack@gmail.com&amp;gt;
+Reviewed-By: Vse Mozhet Byt &amp;lt;vsemozhetbyt@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+</feed>
