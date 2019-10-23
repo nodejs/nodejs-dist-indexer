@@ -366,8 +366,17 @@ function dirDate (dir, callback) {
     map(files, mtime, afterMap)
 
     function mtime (file, callback) {
+      const ignoreDirectoryDate = new Date('2019-10-01')
       fs.stat(path.join(argv.dist, dir, file), function (err, stat) {
-        callback(null, stat && stat.isFile() && stat.mtime)
+        if (err || !stat) {
+          return callback(err)
+        }
+        if (!stat.isFile() && stat.mtime >= ignoreDirectoryDate) {
+          // is a directory, but we stopped using directories as a date reference in Oct-19
+          // and don't want to rewrite old dates
+          return callback(null)
+        }
+        callback(null, stat.mtime) // is a file
       })
     }
 
