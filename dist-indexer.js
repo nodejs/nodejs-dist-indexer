@@ -367,7 +367,7 @@ function dirDate (dir, callback) {
 
     function mtime (file, callback) {
       fs.stat(path.join(argv.dist, dir, file), function (err, stat) {
-        callback(null, stat && stat.mtime)
+        callback(null, stat && stat.isFile() && stat.mtime)
       })
     }
 
