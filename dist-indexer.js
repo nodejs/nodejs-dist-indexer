@@ -1,80 +1,79 @@
 #!/usr/bin/env node
 
-'use strict';
+'use strict'
 
-const fs         = require('fs')
-    , path       = require('path')
-    , argv       = require('minimist')(process.argv.slice(2))
-    , map        = require('map-async')
-    , after      = require('after')
-    , hyperquest = require('hyperquest')
-    , bl         = require('bl')
-    , semver     = require('semver')
+const fs = require('fs')
+const path = require('path')
+const argv = require('minimist')(process.argv.slice(2))
+const map = require('map-async')
+const after = require('after')
+const hyperquest = require('hyperquest')
+const bl = require('bl')
+const semver = require('semver')
 
-    , transformFilename = require('./transform-filename')
-    , decodeRef  = require('./decode-ref')
-    , isSecurityRelease  = require('./is-security-release')
+const transformFilename = require('./transform-filename')
+const decodeRef = require('./decode-ref')
+const isSecurityRelease = require('./is-security-release')
 
-    , versionCachePath = path.join(process.env.HOME, '.dist-indexer-version-cache')
+const versionCachePath = path.join(process.env.HOME, '.dist-indexer-version-cache')
 
-    // needs auth: githubContentUrl = 'https://api.github.com/repos/nodejs/node/contents'
-    , githubContentUrl = 'https://raw.githubusercontent.com/nodejs/{repo}/{gitref}'
-    , npmPkgJsonUrl    = `${githubContentUrl}/deps/npm/package.json`
-    , v8VersionUrl     = [
-          `${githubContentUrl}/deps/v8/src/version.cc`
-        , `${githubContentUrl}/deps/v8/include/v8-version.h`
-      ]
-    , uvVersionUrl     = [
-          `${githubContentUrl}/deps/uv/include/uv-version.h`
-        , `${githubContentUrl}/deps/uv/src/version.c`
-        , `${githubContentUrl}/deps/uv/include/uv.h`
-        , `${githubContentUrl}/deps/uv/include/uv/version.h`
-      ]
-    , sslVersionUrl    = [
-          `${githubContentUrl}/deps/openssl/openssl/include/openssl/opensslv.h`
-        , `${githubContentUrl}/deps/openssl/openssl/Makefile`
-      ]
-    , zlibVersionUrl   = `${githubContentUrl}/deps/zlib/zlib.h`
-    , modVersionUrl    = [
-          `${githubContentUrl}/src/node_version.h`
-        , `${githubContentUrl}/src/node.h`
-      ]
-    , ltsVersionUrl    = `${githubContentUrl}/src/node_version.h`
-    , isSecurityUrl    = 'https://github.com/nodejs/{repo}/commits/{gitref}.atom'
-    , githubOptions    = { headers: {
-          'accept': 'text/plain,application/vnd.github.v3.raw'
-      } }
+// needs auth: githubContentUrl = 'https://api.github.com/repos/nodejs/node/contents'
+const githubContentUrl = 'https://raw.githubusercontent.com/nodejs/{repo}/{gitref}'
+const npmPkgJsonUrl = `${githubContentUrl}/deps/npm/package.json`
+const v8VersionUrl = [
+  `${githubContentUrl}/deps/v8/src/version.cc`,
+  `${githubContentUrl}/deps/v8/include/v8-version.h`
+]
+const uvVersionUrl = [
+  `${githubContentUrl}/deps/uv/include/uv-version.h`,
+  `${githubContentUrl}/deps/uv/src/version.c`,
+  `${githubContentUrl}/deps/uv/include/uv.h`,
+  `${githubContentUrl}/deps/uv/include/uv/version.h`
+]
+const sslVersionUrl = [
+  `${githubContentUrl}/deps/openssl/openssl/include/openssl/opensslv.h`,
+  `${githubContentUrl}/deps/openssl/openssl/Makefile`
+]
+const zlibVersionUrl = `${githubContentUrl}/deps/zlib/zlib.h`
+const modVersionUrl = [
+  `${githubContentUrl}/src/node_version.h`,
+  `${githubContentUrl}/src/node.h`
+]
+const ltsVersionUrl = `${githubContentUrl}/src/node_version.h`
+const isSecurityUrl = 'https://github.com/nodejs/{repo}/commits/{gitref}.atom'
+const githubOptions = {
+  headers: {
+    accept: 'text/plain,application/vnd.github.v3.raw'
+  }
+}
 
-
-if (typeof argv.dist != 'string')
+if (typeof argv.dist !== 'string') {
   throw new Error('Missing --dist <directory> argument')
+}
 
-if (typeof argv.indexjson != 'string')
+if (typeof argv.indexjson !== 'string') {
   throw new Error('Missing --indexjson <directory> argument')
+}
 
-if (typeof argv.indextab != 'string')
+if (typeof argv.indextab !== 'string') {
   throw new Error('Missing --indextab <directory> argument')
+}
 
-if (!fs.statSync(argv.dist).isDirectory())
-  throw new Error('"%s" is not a directory')
+if (!fs.statSync(argv.dist).isDirectory()) { throw new Error('"%s" is not a directory') }
 
-
-var versionCache = {}
+let versionCache = {}
 
 try {
   versionCache = JSON.parse(fs.readFileSync(versionCachePath, 'utf8'))
 } catch (e) {}
 
-
 function saveVersionCache () {
   fs.writeFileSync(versionCachePath, JSON.stringify(versionCache), 'utf8')
 }
 
-
 function cacheGet (gitref, prop) {
   return versionCache[gitref] && versionCache[gitref][prop]
 }
-
 
 function cachePut (gitref, prop, value) {
   if (prop && (value || value === false)) {
@@ -82,37 +81,38 @@ function cachePut (gitref, prop, value) {
   }
 }
 
-
 function fetch (url, gitref, callback) {
-  let refparts = gitref.split('/')
-  let repo = refparts[0] == 'v8-canary'
-             ? 'node-v8'
-             : (/^v0\.\d\./).test(refparts[1])
-               ? 'node-v0.x-archive'
-               : 'node'
+  const refparts = gitref.split('/')
+  const repo = refparts[0] === 'v8-canary'
+    ? 'node-v8'
+    : (/^v0\.\d\./).test(refparts[1])
+      ? 'node-v0.x-archive'
+      : 'node'
 
   url = url.replace('{gitref}', refparts[1])
-           .replace('{repo}', repo)
-           + `?rev=${refparts[1]}`
-  hyperquest.get(url, githubOptions).pipe(bl(function (err, data) {
-    if (err)
+    .replace('{repo}', repo) +
+           `?rev=${refparts[1]}`
+  hyperquest.get(url, githubOptions).pipe(bl((err, data) => {
+    if (err) {
       return callback(err)
+    }
 
     callback(null, data.toString())
   }))
 }
 
-
 function fetchNpmVersion (gitref, callback) {
-  var version = cacheGet(gitref, 'npm')
-  if (version || (/\/v0\.([012345]\.\d+|6\.[0-2])$/).test(gitref))
+  const version = cacheGet(gitref, 'npm')
+  if (version || (/\/v0\.([012345]\.\d+|6\.[0-2])$/).test(gitref)) {
     return setImmediate(callback.bind(null, null, version))
+  }
 
-  fetch(npmPkgJsonUrl, gitref, function (err, rawData) {
-    if (err)
+  fetch(npmPkgJsonUrl, gitref, (err, rawData) => {
+    if (err) {
       return callback(err)
+    }
 
-    var data
+    let data
 
     try {
       data = JSON.parse(rawData)
@@ -125,21 +125,22 @@ function fetchNpmVersion (gitref, callback) {
   })
 }
 
-
 function fetchV8Version (gitref, callback) {
-  var version = cacheGet(gitref, 'v8')
-  if (version)
+  let version = cacheGet(gitref, 'v8')
+  if (version) {
     return setImmediate(callback.bind(null, null, version))
+  }
 
-  fetch(v8VersionUrl[0], gitref, function (err, rawData) {
-    if (err)
+  fetch(v8VersionUrl[0], gitref, (err, rawData) => {
+    if (err) {
       return callback(err)
+    }
 
-    version = rawData.split('\n').map(function (line) {
-        return line.match(/^#define (?:MAJOR_VERSION|MINOR_VERSION|BUILD_NUMBER|PATCH_LEVEL)\s+(\d+)$/)
-      })
+    version = rawData.split('\n').map((line) => {
+      return line.match(/^#define (?:MAJOR_VERSION|MINOR_VERSION|BUILD_NUMBER|PATCH_LEVEL)\s+(\d+)$/)
+    })
       .filter(Boolean)
-      .map(function (m) { return m[1] })
+      .map((m) => m[1])
       .join('.')
 
     if (version) {
@@ -147,15 +148,16 @@ function fetchV8Version (gitref, callback) {
       return callback(null, version)
     }
 
-    fetch(v8VersionUrl[1], gitref, function (err, rawData) {
-      if (err)
+    fetch(v8VersionUrl[1], gitref, (err, rawData) => {
+      if (err) {
         return callback(err)
+      }
 
-      version = rawData.split('\n').map(function (line) {
-          return line.match(/^#define V8_(?:MAJOR_VERSION|MINOR_VERSION|BUILD_NUMBER|PATCH_LEVEL)\s+(\d+)$/)
-        })
+      version = rawData.split('\n').map((line) => {
+        return line.match(/^#define V8_(?:MAJOR_VERSION|MINOR_VERSION|BUILD_NUMBER|PATCH_LEVEL)\s+(\d+)$/)
+      })
         .filter(Boolean)
-        .map(function (m) { return m[1] })
+        .map((m) => m[1])
         .join('.')
 
       cachePut(gitref, 'v8', version)
@@ -165,19 +167,21 @@ function fetchV8Version (gitref, callback) {
 }
 
 function fetchUvVersion (gitref, callback) {
-  var version = cacheGet(gitref, 'uv')
-  if (version || (/\/v0\.([01234]\.\d+|5\.0)$/).test(gitref))
+  let version = cacheGet(gitref, 'uv')
+  if (version || (/\/v0\.([01234]\.\d+|5\.0)$/).test(gitref)) {
     return setImmediate(callback.bind(null, null, version))
+  }
 
-  fetch(uvVersionUrl[0], gitref, function (err, rawData) {
-    if (err)
+  fetch(uvVersionUrl[0], gitref, (err, rawData) => {
+    if (err) {
       return callback(err)
+    }
 
-    version = rawData.split('\n').map(function (line) {
-        return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
-      })
+    version = rawData.split('\n').map((line) => {
+      return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
+    })
       .filter(Boolean)
-      .map(function (m) { return m[1] })
+      .map((m) => m[1])
       .join('.')
 
     if (version) {
@@ -185,15 +189,16 @@ function fetchUvVersion (gitref, callback) {
       return callback(null, version)
     }
 
-    fetch(uvVersionUrl[1], gitref, function (err, rawData) {
-      if (err)
+    fetch(uvVersionUrl[1], gitref, (err, rawData) => {
+      if (err) {
         return callback(err)
+      }
 
-      version = rawData.split('\n').map(function (line) {
-          return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
-        })
+      version = rawData.split('\n').map((line) => {
+        return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
+      })
         .filter(Boolean)
-        .map(function (m) { return m[1] })
+        .map((m) => m[1])
         .join('.')
 
       if (version) {
@@ -201,15 +206,16 @@ function fetchUvVersion (gitref, callback) {
         return callback(null, version)
       }
 
-      fetch(uvVersionUrl[2], gitref, function (err, rawData) {
-        if (err)
+      fetch(uvVersionUrl[2], gitref, (err, rawData) => {
+        if (err) {
           return callback(err)
+        }
 
-        version = rawData.split('\n').map(function (line) {
-            return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
-          })
+        version = rawData.split('\n').map((line) => {
+          return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
+        })
           .filter(Boolean)
-          .map(function (m) { return m[1] })
+          .map((m) => m[1])
           .join('.')
 
         if (version) {
@@ -217,15 +223,16 @@ function fetchUvVersion (gitref, callback) {
           return callback(null, version)
         }
 
-        fetch(uvVersionUrl[3], gitref, function (err, rawData) {
-          if (err)
+        fetch(uvVersionUrl[3], gitref, (err, rawData) => {
+          if (err) {
             return callback(err)
+          }
 
-          version = rawData.split('\n').map(function (line) {
-              return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
-            })
+          version = rawData.split('\n').map((line) => {
+            return line.match(/^#define UV_VERSION_(?:MAJOR|MINOR|PATCH)\s+(\d+)$/)
+          })
             .filter(Boolean)
-            .map(function (m) { return m[1] })
+            .map((m) => m[1])
             .join('.')
 
           cachePut(gitref, 'uv', version)
@@ -236,17 +243,18 @@ function fetchUvVersion (gitref, callback) {
   })
 }
 
-
 function fetchSslVersion (gitref, callback) {
-  var version = cacheGet(gitref, 'ssl')
-  if (version || (/\/v0\.([01234]\.\d+|5\.[0-4])$/).test(gitref))
+  let version = cacheGet(gitref, 'ssl')
+  if (version || (/\/v0\.([01234]\.\d+|5\.[0-4])$/).test(gitref)) {
     return setImmediate(callback.bind(null, null, version))
+  }
 
-  fetch(sslVersionUrl[0], gitref, function (err, rawData) {
-    if (err)
+  fetch(sslVersionUrl[0], gitref, (err, rawData) => {
+    if (err) {
       return callback(err)
+    }
 
-    var m = rawData.match(/^#\s*define OPENSSL_VERSION_TEXT\s+"OpenSSL ([^\s]+)/m)
+    const m = rawData.match(/^#\s*define OPENSSL_VERSION_TEXT\s+"OpenSSL ([^\s]+)/m)
     version = m && m[1]
 
     if (version) {
@@ -256,11 +264,12 @@ function fetchSslVersion (gitref, callback) {
       return callback(null, version)
     }
 
-    fetch(sslVersionUrl[1], gitref, function (err, rawData) {
-      if (err)
+    fetch(sslVersionUrl[1], gitref, (err, rawData) => {
+      if (err) {
         return callback(err)
+      }
 
-      var m = rawData.match(/^VERSION=(.+)$/m)
+      const m = rawData.match(/^VERSION=(.+)$/m)
       version = m && m[1]
       cachePut(gitref, 'ssl', version)
 
@@ -269,17 +278,18 @@ function fetchSslVersion (gitref, callback) {
   })
 }
 
-
 function fetchZlibVersion (gitref, callback) {
-  var version = cacheGet(gitref, 'zlib')
-  if (version || (/\/v0\.([01234]\.\d+|5\.[0-7])$/).test(gitref))
+  let version = cacheGet(gitref, 'zlib')
+  if (version || (/\/v0\.([01234]\.\d+|5\.[0-7])$/).test(gitref)) {
     return setImmediate(callback.bind(null, null, version))
+  }
 
-  fetch(zlibVersionUrl, gitref, function (err, rawData) {
-    if (err)
+  fetch(zlibVersionUrl, gitref, (err, rawData) => {
+    if (err) {
       return callback(err)
+    }
 
-    var m = rawData.match(/^#define ZLIB_VERSION\s+"(.+)"$/m)
+    const m = rawData.match(/^#define ZLIB_VERSION\s+"(.+)"$/m)
     version = m && m[1]
     cachePut(gitref, 'zlib', version)
 
@@ -287,17 +297,18 @@ function fetchZlibVersion (gitref, callback) {
   })
 }
 
-
 function fetchModVersion (gitref, callback) {
-  var version = cacheGet(gitref, 'mod')
-  if (version || (/\/v0\.1\.\d+$/).test(gitref))
+  let version = cacheGet(gitref, 'mod')
+  if (version || (/\/v0\.1\.\d+$/).test(gitref)) {
     return setImmediate(callback.bind(null, null, version))
+  }
 
-  fetch(modVersionUrl[0], gitref, function (err, rawData) {
-    if (err)
+  fetch(modVersionUrl[0], gitref, (err, rawData) => {
+    if (err) {
       return callback(err)
+    }
 
-    var m = rawData.match(/^#define NODE_MODULE_VERSION\s+([^\s]+)\s+.+$/m)
+    let m = rawData.match(/^#define NODE_MODULE_VERSION\s+([^\s]+)\s+.+$/m)
     version = m && m[1]
 
     if (version) {
@@ -305,11 +316,12 @@ function fetchModVersion (gitref, callback) {
       return callback(null, version)
     }
 
-    fetch(modVersionUrl[1], gitref, function (err, rawData) {
-      if (err)
+    fetch(modVersionUrl[1], gitref, (err, rawData) => {
+      if (err) {
         return callback(err)
+      }
 
-      m = rawData.match(/^#define NODE_MODULE_VERSION\s+\(?([^\s\)]+)\)?\s+.+$/m)
+      m = rawData.match(/^#define NODE_MODULE_VERSION\s+\(?([^\s)]+)\)?\s+.+$/m)
       version = m && m[1]
       cachePut(gitref, 'mod', version)
       callback(null, version)
@@ -317,39 +329,42 @@ function fetchModVersion (gitref, callback) {
   })
 }
 
-
 function fetchLtsVersion (gitref, callback) {
-  var version = cacheGet(gitref, 'lts')
+  let version = cacheGet(gitref, 'lts')
 
-  if (version || version === false)
+  if (version || version === false) {
     return setImmediate(callback.bind(null, null, version))
+  }
 
-  fetch(ltsVersionUrl, gitref, function (err, rawData) {
-    if (err)
+  fetch(ltsVersionUrl, gitref, (err, rawData) => {
+    if (err) {
       return callback(err)
+    }
 
-    var m = rawData.match(/^#define NODE_VERSION_IS_LTS 1$/m)
+    let m = rawData.match(/^#define NODE_VERSION_IS_LTS 1$/m)
     if (m) {
       m = rawData.match(/^#define NODE_VERSION_LTS_CODENAME "([^"]+)"$/m)
       version = m && m[1]
-    } else
+    } else {
       version = false
+    }
 
     cachePut(gitref, 'lts', version)
     callback(null, version)
   })
 }
 
-
 function fetchSecurity (gitref, callback) {
-  var security = cacheGet(gitref, 'security')
+  let security = cacheGet(gitref, 'security')
 
-  if (security || security === false)
+  if (security || security === false) {
     return setImmediate(callback.bind(null, null, security))
+  }
 
-  fetch(isSecurityUrl, gitref, function (err, rawData) {
-    if (err)
+  fetch(isSecurityUrl, gitref, (err, rawData) => {
+    if (err) {
       return callback(err)
+    }
 
     security = isSecurityRelease(rawData)
     cachePut(gitref, 'security', security)
@@ -357,17 +372,15 @@ function fetchSecurity (gitref, callback) {
   })
 }
 
-
 function dirDate (dir, callback) {
-  fs.readdir(path.join(argv.dist, dir), function (err, files) {
-    if (err)
+  fs.readdir(path.join(argv.dist, dir), (err, files) => {
+    if (err) {
       return callback(err)
+    }
 
-    map(files, mtime, afterMap)
-
-    function mtime (file, callback) {
+    const mtime = (file, callback) => {
       const ignoreDirectoryDate = new Date('2019-10-01')
-      fs.stat(path.join(argv.dist, dir, file), function (err, stat) {
+      fs.stat(path.join(argv.dist, dir, file), (err, stat) => {
         if (err || !stat) {
           return callback(err)
         }
@@ -380,60 +393,86 @@ function dirDate (dir, callback) {
       })
     }
 
-    function afterMap (err, mtimes) {
+    const afterMap = (err, mtimes) => {
+      if (err) {
+        return callback(err)
+      }
       mtimes = mtimes.filter(Boolean)
       mtimes.sort((d1, d2) => d1 < d2 ? -1 : d1 > d2 ? 1 : 0)
       callback(null, mtimes[0])
     }
+
+    map(files, mtime, afterMap)
   })
 }
 
-
 function dirFiles (dir, callback) {
-  //TODO: look in SHASUMS.txt as well for older versions
-  fs.readFile(path.join(argv.dist, dir, 'SHASUMS256.txt'), 'utf8', afterReadFile)
-
-  function afterReadFile (err, contents) {
-    if (err)
+  // TODO: look in SHASUMS.txt as well for older versions
+  fs.readFile(path.join(argv.dist, dir, 'SHASUMS256.txt'), 'utf8', (err, contents) => {
+    if (err) {
       return callback(err)
+    }
 
-    var files = contents.split('\n').map(function (line) {
-        var seg = line.split(/\s+/)
-        return seg.length >= 2 && seg[1]
-      })
+    const files = contents.split('\n').map((line) => {
+      const seg = line.split(/\s+/)
+      return seg.length >= 2 && seg[1]
+    })
       .map(transformFilename)
       .filter(Boolean)
       .sort()
 
     callback(null, files)
-  }
+  })
 }
 
-
 function inspectDir (dir, callback) {
-  var gitref = decodeRef(dir)
-    , files
-    , npmVersion
-    , v8Version
-    , uvVersion
-    , sslVersion
-    , zlibVersion
-    , modVersion
-    , ltsVersion
-    , securityRelease
-    , date
+  const gitref = decodeRef(dir)
+  let files
+  let npmVersion
+  let v8Version
+  let uvVersion
+  let sslVersion
+  let zlibVersion
+  let modVersion
+  let ltsVersion
+  let securityRelease
+  let date
 
   if (!gitref) {
-    return fs.stat(path.join(argv.dist, dir), function (err, stat) {
-      if (err)
+    return fs.stat(path.join(argv.dist, dir), (err, stat) => {
+      if (err) {
         return callback(err)
-      if (stat.isDirectory() && !(/^(latest|npm$|patch$|v0\.10\.16-isaacs-manual$)/).test(dir))
+      }
+      if (stat.isDirectory() && !(/^(latest|npm$|patch$|v0\.10\.16-isaacs-manual$)/).test(dir)) {
         console.error(`Ignoring directory "${dir}" (can't decode ref)`)
+      }
       return callback()
     })
   }
 
-  dirFiles(dir, function (err, _files) {
+  const afterAll = (err) => {
+    if (err) {
+      console.error(err)
+      console.error('(ignoring directory due to error %s)', dir)
+      return callback()
+    }
+
+    callback(null, {
+      version: dir,
+      date: date.toISOString().substring(0, 10),
+      files: files,
+      npm: npmVersion,
+      v8: v8Version,
+      uv: uvVersion,
+      zlib: zlibVersion,
+      openssl: sslVersion,
+      modules: modVersion,
+      lts: ltsVersion,
+      security: securityRelease
+    })
+  }
+
+  dirFiles(dir, (err, _files) => {
     if (err) {
       console.error(`Ignoring directory "${dir}" (can't decode dir contents)`)
       return callback() // not a dir we care about
@@ -441,17 +480,18 @@ function inspectDir (dir, callback) {
 
     files = _files
 
-    var done = after(9, afterAll)
+    const done = after(9, afterAll)
 
-    dirDate(dir, function (err, _date) {
-      if (err)
+    dirDate(dir, (err, _date) => {
+      if (err) {
         return done(err)
+      }
 
       date = _date
       done()
     })
 
-    fetchNpmVersion(gitref, function (err, version) {
+    fetchNpmVersion(gitref, (err, version) => {
       if (err) {
         console.error(err)
         console.error('(ignoring error fetching npm version for %s)', gitref)
@@ -460,7 +500,7 @@ function inspectDir (dir, callback) {
       done()
     })
 
-    fetchV8Version(gitref, function (err, version) {
+    fetchV8Version(gitref, (err, version) => {
       if (err) {
         console.error(err)
         console.error('(ignoring error fetching V8 version for %s)', gitref)
@@ -469,7 +509,7 @@ function inspectDir (dir, callback) {
       done()
     })
 
-    fetchUvVersion(gitref, function (err, version) {
+    fetchUvVersion(gitref, (err, version) => {
       if (err) {
         console.error(err)
         console.error('(ignoring error fetching uv version for %s)', gitref)
@@ -478,7 +518,7 @@ function inspectDir (dir, callback) {
       done()
     })
 
-    fetchSslVersion(gitref, function (err, version) {
+    fetchSslVersion(gitref, (err, version) => {
       if (err) {
         console.error(err)
         console.error('(ignoring error fetching OpenSSL version for %s)', gitref)
@@ -487,7 +527,7 @@ function inspectDir (dir, callback) {
       done()
     })
 
-    fetchZlibVersion(gitref, function (err, version) {
+    fetchZlibVersion(gitref, (err, version) => {
       if (err) {
         console.error(err)
         console.error('(ignoring error fetching zlib version for %s)', gitref)
@@ -496,7 +536,7 @@ function inspectDir (dir, callback) {
       done()
     })
 
-    fetchModVersion(gitref, function (err, version) {
+    fetchModVersion(gitref, (err, version) => {
       if (err) {
         console.error(err)
         console.error('(ignoring error fetching modules version for %s)', gitref)
@@ -505,7 +545,7 @@ function inspectDir (dir, callback) {
       done()
     })
 
-    fetchLtsVersion(gitref, function (err, version) {
+    fetchLtsVersion(gitref, (err, version) => {
       if (err) {
         console.error(err)
         console.error('(ignoring error fetching LTS version for %s)', gitref)
@@ -514,7 +554,7 @@ function inspectDir (dir, callback) {
       done()
     })
 
-    fetchSecurity(gitref, function (err, security) {
+    fetchSecurity(gitref, (err, security) => {
       if (err) {
         console.error(err)
         console.error('(ignoring error fetching security release for %s)', gitref)
@@ -523,71 +563,44 @@ function inspectDir (dir, callback) {
       done()
     })
   })
-
-  function afterAll (err) {
-    if (err) {
-      console.error(err)
-      console.error('(ignoring directory due to error %s)', dir)
-      return callback()
-    }
-
-    callback(null, {
-        version   : dir
-      , date      : date.toISOString().substring(0, 10)
-      , files     : files
-      , npm       : npmVersion
-      , v8        : v8Version
-      , uv        : uvVersion
-      , zlib      : zlibVersion
-      , openssl   : sslVersion
-      , modules   : modVersion
-      , lts       : ltsVersion
-      , security  : securityRelease
-    })
-  }
 }
 
-
-map(fs.readdirSync(argv.dist).sort().reverse(), inspectDir, afterMap)
-
-
-function afterMap (err, dirs) {
-  if (err)
+map(fs.readdirSync(argv.dist).sort().reverse(), inspectDir, (err, dirs) => {
+  if (err) {
     throw err
+  }
 
-  dirs.sort(function (d1, d2) {
-    return semver.compare(d2.version, d1.version)
-  })
+  dirs.sort((d1, d2) => semver.compare(d2.version, d1.version))
 
   saveVersionCache()
 
   dirs = dirs.filter(Boolean)
 
-  var jsonOut = fs.createWriteStream(argv.indexjson, 'utf8')
-    , tabOut  = fs.createWriteStream(argv.indextab, 'utf8')
+  const jsonOut = fs.createWriteStream(argv.indexjson, 'utf8')
+  const tabOut = fs.createWriteStream(argv.indextab, 'utf8')
 
   function tabWrite () {
-    var args = [].slice.call(arguments).map((a) => a || '-')
+    const args = [].slice.call(arguments).map((a) => a || '-')
     tabOut.write(args.join('\t') + '\n')
   }
 
   jsonOut.write('[\n')
   tabWrite('version', 'date', 'files', 'npm', 'v8', 'uv', 'zlib', 'openssl', 'modules', 'lts', 'security')
 
-  dirs.forEach(function (dir, i) {
-    jsonOut.write(JSON.stringify(dir) + (i != dirs.length - 1 ? ',\n' : '\n'))
+  dirs.forEach((dir, i) => {
+    jsonOut.write(JSON.stringify(dir) + (i !== dirs.length - 1 ? ',\n' : '\n'))
     tabWrite(
-        dir.version
-      , dir.date
-      , dir.files.join(',')
-      , dir.npm
-      , dir.v8
-      , dir.uv
-      , dir.zlib
-      , dir.openssl
-      , dir.modules
-      , dir.lts
-      , dir.security
+      dir.version,
+      dir.date,
+      dir.files.join(','),
+      dir.npm,
+      dir.v8,
+      dir.uv,
+      dir.zlib,
+      dir.openssl,
+      dir.modules,
+      dir.lts,
+      dir.security
     )
   })
 
@@ -595,4 +608,4 @@ function afterMap (err, dirs) {
 
   jsonOut.end()
   tabOut.end()
-}
+})
