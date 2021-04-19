@@ -1,6 +1,7 @@
 const assert = require('assert')
 const types = {
   'aix-ppc64': 'aix-ppc64',
+  'darwin-arm64': 'osx-arm64-tar',
   'darwin-x64': 'osx-x64-tar',
   'darwin-x86': 'osx-x86-tar',
   headers: 'headers',
@@ -145,6 +146,8 @@ if (module === require.main) {
     { file: 'node-v9.0.0-test20170609cd40078f1f-darwin-x64.tar.xz' },
     { file: 'node-v9.0.0-test20170609cd40078f1f-headers.tar.gz', type: 'headers' },
     { file: 'node-v9.0.0-test20170609cd40078f1f-headers.tar.xz' },
+    { file: 'node-v16.0.0-rc.4-darwin-arm64.tar.gz', type: 'osx-arm64-tar' },
+    { file: 'node-v16.0.0-rc.4-darwin-arm64.tar.xz' },
     { file: 'win-arm/node.exe', type: 'win-arm-exe' },
     { file: 'node-v8.1.4-win-arm.7z', type: 'win-arm-7z' },
     { file: 'node-v8.1.4-win-arm.zip', type: 'win-arm-zip' },
