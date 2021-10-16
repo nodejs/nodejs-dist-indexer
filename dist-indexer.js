@@ -32,6 +32,7 @@ const uvVersionUrl = [
 ]
 const sslVersionUrl = [
   `${githubContentUrl}/deps/openssl/openssl/include/openssl/opensslv.h`,
+  `${githubContentUrl}/deps/openssl/config/archs/linux-x86_64/asm/include/openssl/opensslv.h`,
   `${githubContentUrl}/deps/openssl/openssl/Makefile`
 ]
 const zlibVersionUrl = `${githubContentUrl}/deps/zlib/zlib.h`
@@ -269,11 +270,27 @@ function fetchSslVersion (gitref, callback) {
         return callback(err)
       }
 
-      const m = rawData.match(/^VERSION=(.+)$/m)
+      const m = rawData.match(/^#\s*define OPENSSL_VERSION_TEXT\s+"OpenSSL ([^\s]+)/m)
       version = m && m[1]
-      cachePut(gitref, 'ssl', version)
 
-      callback(null, version)
+      if (version) {
+        version = version.replace(/-fips$/, '')
+        cachePut(gitref, 'ssl', version)
+
+        return callback(null, version)
+      }
+
+      fetch(sslVersionUrl[2], gitref, (err, rawData) => {
+        if (err) {
+          return callback(err)
+        }
+
+        const m = rawData.match(/^VERSION=(.+)$/m)
+        version = m && m[1]
+        cachePut(gitref, 'ssl', version)
+
+        callback(null, version)
+      })
     })
   })
 }
