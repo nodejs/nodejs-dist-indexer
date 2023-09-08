@@ -35,6 +35,8 @@ const types = {
   'x64/node.exe': 'win-x64-exe',
   'x86.msi': 'win-x86-msi',
   // unofficial-builds:
+  'linux-loong64': 'linux-loong64',
+  'linux-riscv64': 'linux-riscv64',
   'linux-x64-musl': 'linux-x64-musl',
   'linux-x64-pointer-compression': 'linux-x64-pointer-compression',
   'linux-x64-usdt': 'linux-x64-usdt',
