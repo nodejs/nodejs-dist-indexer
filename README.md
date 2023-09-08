@@ -36,7 +36,9 @@ OS / architecture / packaging specifiers used in the listings include:
 * **linux-arm64**: normally .tar.gz and .tar.xz (also known as AArch64 or ARMv8)
 * **linux-armv6l**: normally .tar.gz and .tar.xz
 * **linux-armv7l**: normally .tar.gz and .tar.xz
+* **linux-loong64**: normally .tar.gz and .tar.xz
 * **linux-ppc64le**: normally .tar.gz and .tar.xz
+* **linux-riscv64**: normally .tar.gz and .tar.xz
 * **linux-s390x**: normally .tar.gz and .tar.xz
 * **linux-x64**: normally .tar.gz and .tar.xz
 * **linux-x86**: normally .tar.gz and .tar.xz
