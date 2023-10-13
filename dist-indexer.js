@@ -325,7 +325,7 @@ function fetchModVersion (gitref, callback) {
       return callback(err)
     }
 
-    let m = rawData.match(/^#define NODE_MODULE_VERSION\s+([^\s]+)\s+.+$/m)
+    let m = rawData.match(/^#define NODE_MODULE_VERSION\s+((?!NODE_EMBEDDER_MODULE_VERSION)[^\s]+)\s+.+$/m)
     version = m && m[1]
 
     if (version) {
