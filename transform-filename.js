@@ -41,6 +41,7 @@ const types = {
   'linux-x64-musl': 'linux-x64-musl',
   'linux-x64-pointer-compression': 'linux-x64-pointer-compression',
   'linux-x64-usdt': 'linux-x64-usdt',
+  'linux-x64-debug': 'linux-x64-debug',
   'win-arm64.7z': 'win-arm64-7z',
   'win-arm64.zip': 'win-arm64-zip'
 }
@@ -170,6 +171,8 @@ if (module === require.main) {
     { file: 'node-v14.13.0-linux-x64-pointer-compression.tar.xz' },
     { file: 'node-v14.13.0-linux-x64-usdt.tar.gz', type: 'linux-x64-usdt' },
     { file: 'node-v14.13.0-linux-x64-usdt.tar.xz' },
+    { file: 'node-v14.13.0-linux-x64-debug.tar.gz', type: 'linux-x64-debug' },
+    { file: 'node-v14.13.0-linux-x64-debug.tar.xz' },
     { file: 'node-v14.13.0-win-arm64.zip', type: 'win-arm64-zip' },
     { file: 'node-v14.13.0-win-arm64.7z', type: 'win-arm64-7z' }
   ]
