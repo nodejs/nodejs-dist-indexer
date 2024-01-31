@@ -87,8 +87,8 @@ function fetch (url, gitref, callback) {
   const repo = refparts[0] === 'v8-canary'
     ? 'node-v8'
     : (/^v0\.\d\./).test(refparts[1])
-      ? 'node-v0.x-archive'
-      : 'node'
+        ? 'node-v0.x-archive'
+        : 'node'
 
   url = url.replace('{gitref}', refparts[1])
     .replace('{repo}', repo) +
@@ -477,7 +477,7 @@ function inspectDir (dir, callback) {
     callback(null, {
       version: dir,
       date: date.toISOString().substring(0, 10),
-      files: files,
+      files,
       npm: npmVersion,
       v8: v8Version,
       uv: uvVersion,
