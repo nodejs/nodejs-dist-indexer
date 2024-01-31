@@ -1,0 +1,82 @@
+name: Test & Maybe Release
+on: [push, pull_request]
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20.x, lts/*, current]
+        # not quite windows ready, halp! os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Set up ghauth config (Ubuntu)
+        run: |
+          mkdir -p ~/.config/changelog-maker/
+          echo '{"user": "nodejs", "token": "'${{ secrets.GITHUB_TOKEN }}'"}' > ~/.config/changelog-maker/config.json
+        if: startsWith(matrix.os, 'ubuntu')
+
+      - name: Set up ghauth config (macOS)
+        run: |
+          mkdir -p ~/Library/Application\ Support/changelog-maker/
+          echo '{"user": "nodejs", "token": "'${{ secrets.GITHUB_TOKEN }}'"}' > ~/Library/Application\ Support/changelog-maker/config.json
+        if: startsWith(matrix.os, 'macos')
+
+      - name: Set up ghauth config (Windows)
+        run: |
+          mkdir "%LOCALAPPDATA%\changelog-maker\"
+          echo {"user": "nodejs", "token": "${{ secrets.GITHUB_TOKEN }}"} > "%LOCALAPPDATA%\changelog-maker\config.json"
+        shell: cmd
+        if: startsWith(matrix.os, 'windows')
+      - name: Install Dependencies
+        run: |
+          npm install --no-progress
+      - name: Run tests
+        run: |
+          npm config set script-shell bash
+          npm run test:ci
+  release:
+    name: Release
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: |
+          npm install --no-progress --no-package-lock --no-save
+      - name: Build
+        run: |
+          npm run build
+      - name: Install plugins
+        run: |
+          npm install \
+            @semantic-release/commit-analyzer \
+            conventional-changelog-conventionalcommits \
+            @semantic-release/release-notes-generator \
+            @semantic-release/npm \
+            @semantic-release/github \
+            @semantic-release/git \
+            @semantic-release/changelog \
+            --no-progress --no-package-lock --no-save
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
+
