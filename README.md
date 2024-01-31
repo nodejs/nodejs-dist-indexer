@@ -41,6 +41,7 @@ OS / architecture / packaging specifiers used in the listings include:
 * **linux-riscv64**: normally .tar.gz and .tar.xz
 * **linux-s390x**: normally .tar.gz and .tar.xz
 * **linux-x64**: normally .tar.gz and .tar.xz
+* **linux-x64-debug**: normally .tar.gz and .tar.xz
 * **linux-x64-glibc-217**: normally .tar.gz and .tar.xz
 * **linux-x86**: normally .tar.gz and .tar.xz
 * **osx-arm64-tar**: normally .tar.gz and .tar.xz
