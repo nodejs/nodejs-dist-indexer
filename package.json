@@ -20,12 +20,13 @@
   "scripts": {
     "build": "true",
     "lint": "standard",
-    "test:ci": "npm run test",
-    "test": "npm run lint && node ls-types.js && node transform-filename.js && node decode-ref.js && node is-security-release.js"
+    "lint:fix": "standard --fix",
+    "test": "node --test",
+    "text:ci": "npm run lint && npm test"
   },
   "bin": {
-    "nodejs-dist-indexer": "./dist-indexer.js",
-    "nodejs-ls-types": "./ls-types.js"
+    "nodejs-dist-indexer": "./src/dist-indexer.js",
+    "nodejs-ls-types": "./src/ls-types.js"
   },
   "preferGlobal": true,
   "devDependencies": {
