@@ -1,6 +1,6 @@
-const assert = require('assert')
+const assert = require('node:assert')
 const { describe, it } = require('node:test')
-const transformFilename = require('../transform-filename')
+const transformFilename = require('../src/transform-filename')
 
 const tests = [
   { file: 'doc' },

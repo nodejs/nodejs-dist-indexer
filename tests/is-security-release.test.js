@@ -2,7 +2,7 @@ const { strictEqual } = require('node:assert')
 const { readFileSync } = require('node:fs')
 const { join } = require('node:path')
 const { describe, it } = require('node:test')
-const isSecurityRelease = require('../is-security-release')
+const isSecurityRelease = require('../src/is-security-release')
 
 const fixturespath = join(__dirname, 'fixtures', 'release-notes')
 const tests = [

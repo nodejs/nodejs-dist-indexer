@@ -1,6 +1,6 @@
-const assert = require('assert')
+const assert = require('node:assert')
 const { describe, it } = require('node:test')
-const decodeRef = require('../decode-ref')
+const decodeRef = require('../src/decode-ref')
 
 const tests = [
   { dir: 'v1.0.0', ref: 'node/v1.0.0' },
