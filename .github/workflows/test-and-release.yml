@@ -1,4 +1,6 @@
 name: Test & Maybe Release
+permissions:
+  contents: write
 on: [push, pull_request]
 jobs:
   test:
