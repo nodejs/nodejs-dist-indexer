@@ -1,3 +1,11 @@
+## [1.7.4](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.3...v1.7.4) (2024-10-23)
+
+### Trivial Changes
+
+* **ci:** give release job permission to write to repo ([36c7702](https://github.com/nodejs/nodejs-dist-indexer/commit/36c770274e7090243686d1d5a35b64e4eb81d9f9))
+* **deps:** bump actions/setup-node from 4.0.3 to 4.0.4 ([#31](https://github.com/nodejs/nodejs-dist-indexer/issues/31)) ([91d60f1](https://github.com/nodejs/nodejs-dist-indexer/commit/91d60f11e1762b0f4f5c51bbd9886147355b952a))
+* **test:** use inbuilt node test package ([#35](https://github.com/nodejs/nodejs-dist-indexer/issues/35)) ([dac84eb](https://github.com/nodejs/nodejs-dist-indexer/commit/dac84eb9f401bd1d2c34100e183c6b9dd39b0a32))
+
 ## [1.7.3](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.2...v1.7.3) (2024-07-10)
 
 ### Trivial Changes
