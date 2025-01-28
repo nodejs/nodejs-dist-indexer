@@ -1,3 +1,9 @@
+## [1.7.8](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.7...v1.7.8) (2025-01-28)
+
+### Trivial Changes
+
+* **deps:** bump bl from 6.0.18 to 6.0.19 ([744f2ff](https://github.com/nodejs/nodejs-dist-indexer/commit/744f2ff79a197b31446009e35945519a9bb3396e))
+
 ## [1.7.7](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.6...v1.7.7) (2025-01-28)
 
 ### Trivial Changes
