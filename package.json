@@ -1,6 +1,6 @@
 {
   "name": "nodejs-dist-indexer",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "description": "An application to create nodejs.org distribution index files: index.json and index.tab",
   "main": "src/dist-indexer.js",
   "author": "Rod Vagg <rod@vagg.org>",
