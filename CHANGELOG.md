@@ -1,3 +1,9 @@
+## [1.7.13](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.12...v1.7.13) (2025-04-15)
+
+### Trivial Changes
+
+* **deps:** bump actions/setup-node from 4.3.0 to 4.4.0 ([#50](https://github.com/nodejs/nodejs-dist-indexer/issues/50)) ([bef05e8](https://github.com/nodejs/nodejs-dist-indexer/commit/bef05e8f631e23f33e8889d0ca6ca00bc49da82f))
+
 ## [1.7.12](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.11...v1.7.12) (2025-03-18)
 
 ### Trivial Changes
