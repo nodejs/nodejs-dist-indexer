@@ -1,3 +1,9 @@
+## [1.7.24](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.23...v1.7.24) (2025-11-24)
+
+### Trivial Changes
+
+* **deps:** bump actions/checkout from 5 to 6 ([#61](https://github.com/nodejs/nodejs-dist-indexer/issues/61)) ([b3001f4](https://github.com/nodejs/nodejs-dist-indexer/commit/b3001f4ccaf077218d59245c185eee0699ab2a7b))
+
 ## [1.7.23](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.22...v1.7.23) (2025-11-15)
 
 ### Trivial Changes
