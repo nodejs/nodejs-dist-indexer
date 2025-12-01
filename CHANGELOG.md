@@ -1,3 +1,9 @@
+## [1.7.26](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.25...v1.7.26) (2025-12-01)
+
+### Trivial Changes
+
+* add linux-arm64-musl ([#63](https://github.com/nodejs/nodejs-dist-indexer/issues/63)) ([10513fe](https://github.com/nodejs/nodejs-dist-indexer/commit/10513fe1fe161b385d9c0d55c0e73359610f4882))
+
 ## [1.7.25](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.24...v1.7.25) (2025-11-25)
 
 ### Trivial Changes
