@@ -1,3 +1,10 @@
+## [1.7.29](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.28...v1.7.29) (2026-01-21)
+
+### Trivial Changes
+
+* **deps:** bump actions/setup-node from 6.1.0 to 6.2.0 ([#66](https://github.com/nodejs/nodejs-dist-indexer/issues/66)) ([903218f](https://github.com/nodejs/nodejs-dist-indexer/commit/903218f5bf3cd074805702e63221b896a9d5c46c))
+* switch to npm OIDC publishing ([#67](https://github.com/nodejs/nodejs-dist-indexer/issues/67)) ([742b655](https://github.com/nodejs/nodejs-dist-indexer/commit/742b655a5e45a5796aa10054b8918cd75d862ebd))
+
 ## [1.7.28](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.27...v1.7.28) (2025-12-05)
 
 ### Trivial Changes
