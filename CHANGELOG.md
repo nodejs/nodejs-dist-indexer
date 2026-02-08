@@ -1,3 +1,9 @@
+## [1.7.30](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.29...v1.7.30) (2026-02-08)
+
+### Trivial Changes
+
+* **deps:** bump semver from 7.7.3 to 7.7.4 ([#68](https://github.com/nodejs/nodejs-dist-indexer/issues/68)) ([b0318db](https://github.com/nodejs/nodejs-dist-indexer/commit/b0318db804f98bf9a9ab28986550c5d651aa0fbe))
+
 ## [1.7.29](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.28...v1.7.29) (2026-01-21)
 
 ### Trivial Changes
