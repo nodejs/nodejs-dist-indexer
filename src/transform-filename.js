@@ -36,6 +36,7 @@ const types = {
   // unofficial-builds:
   'linux-loong64': 'linux-loong64',
   'linux-riscv64': 'linux-riscv64',
+  'linux-riscv64-pointer-compression': 'linux-riscv64-pointer-compression',
   'linux-x64-glibc-217': 'linux-x64-glibc-217',
   'linux-x64-musl': 'linux-x64-musl',
   'linux-arm64-musl': 'linux-arm64-musl',
