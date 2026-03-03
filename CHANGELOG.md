@@ -1,3 +1,9 @@
+## [1.8.0](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.30...v1.8.0) (2026-03-03)
+
+### Features
+
+* add riscv64 pointer compression ([#69](https://github.com/nodejs/nodejs-dist-indexer/issues/69)) ([e87a58a](https://github.com/nodejs/nodejs-dist-indexer/commit/e87a58ad23da9cd259e00d30c9ab4d40f26df18d))
+
 ## [1.7.30](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.29...v1.7.30) (2026-02-08)
 
 ### Trivial Changes
