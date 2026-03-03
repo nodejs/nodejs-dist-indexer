@@ -1,3 +1,9 @@
+## [1.8.1](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.0...v1.8.1) (2026-03-03)
+
+### Trivial Changes
+
+* **deps-dev:** bump minimatch from 3.1.2 to 3.1.5 ([#70](https://github.com/nodejs/nodejs-dist-indexer/issues/70)) ([f05febc](https://github.com/nodejs/nodejs-dist-indexer/commit/f05febc5dfd0a9a2fc179b34660b6318ae866498))
+
 ## [1.8.0](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.7.30...v1.8.0) (2026-03-03)
 
 ### Features
