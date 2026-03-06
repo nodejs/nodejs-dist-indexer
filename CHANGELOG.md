@@ -1,3 +1,9 @@
+## [1.8.2](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.1...v1.8.2) (2026-03-06)
+
+### Trivial Changes
+
+* **deps:** bump actions/setup-node from 6.2.0 to 6.3.0 ([#71](https://github.com/nodejs/nodejs-dist-indexer/issues/71)) ([89a9bee](https://github.com/nodejs/nodejs-dist-indexer/commit/89a9bee7df859dfe94748aa7aa6e9a96f4717281))
+
 ## [1.8.1](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.0...v1.8.1) (2026-03-03)
 
 ### Trivial Changes
