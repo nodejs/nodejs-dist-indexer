@@ -1,3 +1,9 @@
+## [1.8.3](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.2...v1.8.3) (2026-03-20)
+
+### Trivial Changes
+
+* **deps-dev:** bump flatted from 3.3.1 to 3.4.2 ([#72](https://github.com/nodejs/nodejs-dist-indexer/issues/72)) ([66e3308](https://github.com/nodejs/nodejs-dist-indexer/commit/66e33088393d626778be93eb05268e0a80c3fff7))
+
 ## [1.8.2](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.1...v1.8.2) (2026-03-06)
 
 ### Trivial Changes
