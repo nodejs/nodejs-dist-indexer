@@ -1,3 +1,9 @@
+## [1.8.9](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.8...v1.8.9) (2026-05-25)
+
+### Trivial Changes
+
+* **deps:** bump semver from 7.8.0 to 7.8.1 ([#78](https://github.com/nodejs/nodejs-dist-indexer/issues/78)) ([cfb08ad](https://github.com/nodejs/nodejs-dist-indexer/commit/cfb08ad2b6c2491c7645965d39c224802df9391d))
+
 ## [1.8.8](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.7...v1.8.8) (2026-05-12)
 
 ### Trivial Changes
