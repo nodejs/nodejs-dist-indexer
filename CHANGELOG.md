@@ -1,3 +1,9 @@
+## [1.8.13](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.12...v1.8.13) (2026-06-22)
+
+### Trivial Changes
+
+* **deps-dev:** bump js-yaml from 4.1.1 to 4.2.0 ([#84](https://github.com/nodejs/nodejs-dist-indexer/issues/84)) ([39bb5cd](https://github.com/nodejs/nodejs-dist-indexer/commit/39bb5cd52657edb8142f71608a402018f36df874))
+
 ## [1.8.12](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.11...v1.8.12) (2026-06-22)
 
 ### Trivial Changes
