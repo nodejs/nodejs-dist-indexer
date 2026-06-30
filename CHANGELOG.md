@@ -1,3 +1,5 @@
+## [1.8.16](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.15...v1.8.16) (2026-06-30)
+
 ## [1.8.15](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.14...v1.8.15) (2026-06-23)
 
 ### Trivial Changes
