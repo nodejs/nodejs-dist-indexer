@@ -1,3 +1,5 @@
+## [1.8.19](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.18...v1.8.19) (2026-07-21)
+
 ## [1.8.18](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.17...v1.8.18) (2026-07-16)
 
 ## [1.8.17](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.16...v1.8.17) (2026-07-03)
