@@ -1,16 +1,44 @@
 ## [1.8.22](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.21...v1.8.22) (2026-07-30)
 
+### Trivial Changes
+
+* **deps:** bump bl from 7.0.10 to 7.0.11 ([#93](https://github.com/nodejs/nodejs-dist-indexer/issues/93)) ([b3bc0c6](https://github.com/nodejs/nodejs-dist-indexer/commit/b3bc0c64b75d2e5f8cd06ebe738e029c949c2f67))
+
 ## [1.8.21](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.20...v1.8.21) (2026-07-29)
+
+### Trivial Changes
+
+* **deps:** bump bl from 7.0.8 to 7.0.10 ([#92](https://github.com/nodejs/nodejs-dist-indexer/issues/92)) ([ea0ba18](https://github.com/nodejs/nodejs-dist-indexer/commit/ea0ba184519bf77cedba52e64ac9d3899ba43571))
 
 ## [1.8.20](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.19...v1.8.20) (2026-07-27)
 
+### Trivial Changes
+
+* **deps:** bump bl from 7.0.7 to 7.0.8 ([#91](https://github.com/nodejs/nodejs-dist-indexer/issues/91)) ([84b1d58](https://github.com/nodejs/nodejs-dist-indexer/commit/84b1d5812bf51421658dbac9054eb39390ca7cdf))
+
 ## [1.8.19](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.18...v1.8.19) (2026-07-21)
+
+### Trivial Changes
+
+* **deps:** bump bl from 7.0.6 to 7.0.7 ([#90](https://github.com/nodejs/nodejs-dist-indexer/issues/90)) ([4d481c8](https://github.com/nodejs/nodejs-dist-indexer/commit/4d481c8e2d4116bb84121a2bc65f63215bea18a5))
 
 ## [1.8.18](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.17...v1.8.18) (2026-07-16)
 
+### Trivial Changes
+
+* **deps:** bump actions/setup-node from 6.4.0 to 7.0.0 ([#89](https://github.com/nodejs/nodejs-dist-indexer/issues/89)) ([0d56069](https://github.com/nodejs/nodejs-dist-indexer/commit/0d560696b44b29e11818603d7baea0138e58cb00))
+
 ## [1.8.17](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.16...v1.8.17) (2026-07-03)
 
+### Trivial Changes
+
+* **deps:** bump bl from 7.0.5 to 7.0.6 ([#88](https://github.com/nodejs/nodejs-dist-indexer/issues/88)) ([005e603](https://github.com/nodejs/nodejs-dist-indexer/commit/005e603c73dd4c7cb8eef960a87e720d18e37048))
+
 ## [1.8.16](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.15...v1.8.16) (2026-06-30)
+
+### Trivial Changes
+
+* **deps:** bump bl from 7.0.4 to 7.0.5 ([#87](https://github.com/nodejs/nodejs-dist-indexer/issues/87)) ([8bfce21](https://github.com/nodejs/nodejs-dist-indexer/commit/8bfce216a22d255bbf78b4ceb1282fe1cae98a11))
 
 ## [1.8.15](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.14...v1.8.15) (2026-06-23)
 

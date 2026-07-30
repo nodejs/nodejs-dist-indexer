@@ -5,19 +5,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [20.x, lts/*, current]
+        node: [lts/*, current]
         # not quite windows ready, halp! os: [macos-latest, ubuntu-latest, windows-latest]
         os: [macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v7.0.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ matrix.node }}
+          check-latest: true
       - name: Set up ghauth config (Ubuntu)
         run: |
           mkdir -p ~/.config/changelog-maker/
@@ -53,31 +54,20 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Setup Node.js
-        uses: actions/setup-node@v7.0.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: lts/*
+          check-latest: true
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: |
           npm install --no-progress --no-package-lock --no-save
       - name: Build
-        run: |
-          npm run build
-      - name: Install plugins
-        run: |
-          npm install \
-            @semantic-release/commit-analyzer \
-            conventional-changelog-conventionalcommits \
-            @semantic-release/release-notes-generator \
-            @semantic-release/npm \
-            @semantic-release/github \
-            @semantic-release/git \
-            @semantic-release/changelog \
-            --no-progress --no-package-lock --no-save
+        run: npm run build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
