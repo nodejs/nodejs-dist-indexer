@@ -42,6 +42,15 @@ const modVersionUrl = [
 ]
 const ltsVersionUrl = `${githubContentUrl}/src/node_version.h`
 const isSecurityUrl = 'https://github.com/nodejs/{repo}/commits/{gitref}.atom'
+const MAX_RESPONSE_SIZE = 1 * 1024 * 1024 // 1MB limit
+
+function sanitizePart (part) {
+  if (typeof part === 'string' && (part.includes('..') || part.startsWith('/'))) {
+    throw new Error('Path traversal attempt detected')
+  }
+  return part
+}
+
 const githubOptions = {
   headers: {
     accept: 'text/plain,application/vnd.github.v3.raw'
@@ -93,7 +102,7 @@ function fetch (url, gitref, callback) {
   url = url.replace('{gitref}', refparts[1])
     .replace('{repo}', repo) +
            `?rev=${refparts[1]}`
-  hyperquest.get(url, githubOptions).pipe(bl((err, data) => {
+  hyperquest.get(url, githubOptions).pipe(bl({ limit: MAX_RESPONSE_SIZE }, (err, data) => {
     if (err) {
       return callback(err)
     }
@@ -390,14 +399,14 @@ function fetchSecurity (gitref, callback) {
 }
 
 function dirDate (dir, callback) {
-  fs.readdir(path.join(argv.dist, dir), (err, files) => {
+  fs.readdir(path.join(argv.dist, sanitizePart(dir)), (err, files) => {
     if (err) {
       return callback(err)
     }
 
     const mtime = (file, callback) => {
       const ignoreDirectoryDate = new Date('2019-10-01')
-      fs.stat(path.join(argv.dist, dir, file), (err, stat) => {
+      fs.stat(path.join(argv.dist, sanitizePart(dir), sanitizePart(file)), (err, stat) => {
         if (err || !stat) {
           return callback(err)
         }
@@ -425,7 +434,7 @@ function dirDate (dir, callback) {
 
 function dirFiles (dir, callback) {
   // TODO: look in SHASUMS.txt as well for older versions
-  fs.readFile(path.join(argv.dist, dir, 'SHASUMS256.txt'), 'utf8', (err, contents) => {
+  fs.readFile(path.join(argv.dist, sanitizePart(dir), 'SHASUMS256.txt'), 'utf8', (err, contents) => {
     if (err) {
       return callback(err)
     }
@@ -456,7 +465,7 @@ function inspectDir (dir, callback) {
   let date
 
   if (!gitref) {
-    return fs.stat(path.join(argv.dist, dir), (err, stat) => {
+    return fs.stat(path.join(argv.dist, sanitizePart(dir)), (err, stat) => {
       if (err) {
         return callback(err)
       }
