@@ -1,3 +1,9 @@
+## [1.8.23](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.22...v1.8.23) (2026-07-30)
+
+### Trivial Changes
+
+* **ci:** slower dependabot, pin action hashes, clean up release process ([#94](https://github.com/nodejs/nodejs-dist-indexer/issues/94)) ([51decb3](https://github.com/nodejs/nodejs-dist-indexer/commit/51decb387749818c1a843db2c5a86570b7f93326))
+
 ## [1.8.22](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.21...v1.8.22) (2026-07-30)
 
 ### Trivial Changes
