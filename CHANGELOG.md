@@ -1,3 +1,9 @@
+## [1.8.25](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.24...v1.8.25) (2026-09-07)
+
+### Trivial Changes
+
+* **deps:** bump bl from 7.0.11 to 7.0.12 in the npm-minor-patch group ([#99](https://github.com/nodejs/nodejs-dist-indexer/issues/99)) ([59d4343](https://github.com/nodejs/nodejs-dist-indexer/commit/59d434360db58970ea32bab86e94b39ac4c8cb15))
+
 ## [1.8.24](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.23...v1.8.24) (2026-08-17)
 
 ### Trivial Changes
