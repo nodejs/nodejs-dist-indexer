@@ -1,3 +1,9 @@
+## [1.8.26](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.25...v1.8.26) (2026-09-08)
+
+### Trivial Changes
+
+* **deps-dev:** bump brace-expansion from 1.1.11 to 1.1.18 ([#101](https://github.com/nodejs/nodejs-dist-indexer/issues/101)) ([373c0f2](https://github.com/nodejs/nodejs-dist-indexer/commit/373c0f242f5d99188b131493f83676d6a770ef1f))
+
 ## [1.8.25](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.24...v1.8.25) (2026-09-07)
 
 ### Trivial Changes
