@@ -1,3 +1,9 @@
+## [1.8.28](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.27...v1.8.28) (2026-10-02)
+
+### Trivial Changes
+
+* **deps:** bump undici ([#103](https://github.com/nodejs/nodejs-dist-indexer/issues/103)) ([b6d4a98](https://github.com/nodejs/nodejs-dist-indexer/commit/b6d4a9866a8f881aef100c7c0b67eab2e5f7adb1))
+
 ## [1.8.27](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.26...v1.8.27) (2026-09-16)
 
 ### Trivial Changes
