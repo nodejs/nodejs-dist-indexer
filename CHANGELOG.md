@@ -1,3 +1,9 @@
+## [1.8.29](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.28...v1.8.29) (2026-10-02)
+
+### Trivial Changes
+
+* **deps-dev:** bump the npm-minor-patch group across 1 directory with 2 updates ([#104](https://github.com/nodejs/nodejs-dist-indexer/issues/104)) ([9c64e7c](https://github.com/nodejs/nodejs-dist-indexer/commit/9c64e7c30f753304d3acab2fe6221fdec60e5612))
+
 ## [1.8.28](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.27...v1.8.28) (2026-10-02)
 
 ### Trivial Changes
