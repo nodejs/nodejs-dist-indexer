@@ -48,7 +48,7 @@ const types = {
 }
 
 function transformFilename (file) {
-  file = file && file.replace(/^(?:\.\/)?(?:iojs|node)-v\d+\.\d+\.\d+-?((rc\.\d+|(?:(next-)?nightly|test|v8-canary)\d{8}[^-.]+)-?)?\.?/, '')
+  file = file && file.replace(/^(?:\.\/)?(?:iojs|node)-v\d+\.\d+\.\d+-?((rc\.\d+|alpha\.\d+\.\d+\.\d+|(?:(next-)?nightly|test|v8-canary)\d{8}[^-.]+)-?)?\.?/, '')
     .replace(/\.tar\.gz$/, '')
 
   return types[file]

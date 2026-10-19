@@ -1,4 +1,4 @@
-const dirre = /^(v\d+\.\d+\.\d+(?:-rc\.\d+)?)(?:-((?:next-)?nightly|test|v8-canary)\d{8}(\w+))?$/ // get version or commit from dir name
+const dirre = /^(v\d+\.\d+\.\d+(?:-rc\.\d+|-alpha\.\d+\.\d+\.\d+)?)(?:-((?:next-)?nightly|test|v8-canary)\d{8}(\w+))?$/ // get version or commit from dir name
 
 function decodeRef (dir) {
   const m = dir.match(dirre)
