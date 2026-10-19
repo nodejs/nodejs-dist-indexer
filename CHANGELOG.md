@@ -1,3 +1,9 @@
+## [1.8.31](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.30...v1.8.31) (2026-10-19)
+
+### Trivial Changes
+
+* **deps-dev:** bump handlebars from 4.7.9 to 4.7.10 ([#108](https://github.com/nodejs/nodejs-dist-indexer/issues/108)) ([84512dd](https://github.com/nodejs/nodejs-dist-indexer/commit/84512ddab3d3088bb2ee926ecfba763ac1630b47))
+
 ## [1.8.30](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.29...v1.8.30) (2026-10-02)
 
 ### Trivial Changes
