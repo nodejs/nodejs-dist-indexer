@@ -1,3 +1,9 @@
+## [1.9.0](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.31...v1.9.0) (2026-10-27)
+
+### Features
+
+* support alpha versions ([#107](https://github.com/nodejs/nodejs-dist-indexer/issues/107)) ([d4625b8](https://github.com/nodejs/nodejs-dist-indexer/commit/d4625b8cc3a410a95521e8147a1944aa8a4a7739)), closes [nodejs/node#63135](https://github.com/nodejs/node/issues/63135)
+
 ## [1.8.31](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.8.30...v1.8.31) (2026-10-19)
 
 ### Trivial Changes
