@@ -4,10 +4,11 @@
 
 const fs = require('fs')
 const path = require('path')
+const { Readable } = require('streams')
+const { pipeline } = require('streams/promises')
 const argv = require('minimist')(process.argv.slice(2))
 const map = require('map-async')
 const after = require('after')
-const hyperquest = require('hyperquest')
 const semver = require('semver')
 
 const transformFilename = require('./transform-filename')
@@ -92,13 +93,16 @@ function fetch (url, gitref, callback) {
   url = url.replace('{gitref}', refparts[1])
     .replace('{repo}', repo) +
            `?rev=${refparts[1]}`
-  import('bl').then(({ default: bl }) => hyperquest.get(url, githubOptions).pipe(bl((err, data) => {
-    if (err) {
-      return callback(err)
-    }
 
-    callback(null, data.toString())
-  })))
+  ;(async () => {
+    const [response, { BufferListStream }] = await Promise.all([
+      globalThis.fetch(url, githubOptions),
+      import('bl')
+    ])
+    const bl = new BufferListStream()
+    await pipeline(Readable.fromWeb(response.body), bl)
+    return bl.toString()
+  })().then(r => callback(null, r), callback)
 }
 
 function fetchNpmVersion (gitref, callback) {
