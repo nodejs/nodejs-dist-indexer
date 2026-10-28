@@ -4,8 +4,8 @@
 
 const fs = require('fs')
 const path = require('path')
-const { Readable } = require('streams')
-const { pipeline } = require('streams/promises')
+const { Readable } = require('stream')
+const { pipeline } = require('stream/promises')
 const argv = require('minimist')(process.argv.slice(2))
 const map = require('map-async')
 const after = require('after')
