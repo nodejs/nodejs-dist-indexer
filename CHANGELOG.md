@@ -1,3 +1,13 @@
+## [1.9.2](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.1...v1.9.2) (2026-10-28)
+
+### Reverts
+
+* Revert "chore(deps): bump bl from 6.1.6 to 7.0.0 ([#73](https://github.com/nodejs/nodejs-dist-indexer/issues/73))" ([be27e78](https://github.com/nodejs/nodejs-dist-indexer/commit/be27e78465be3881f186fd316e15678f4ff97820))
+
+### Trivial Changes
+
+* add basic dist-indexer test ([76bec50](https://github.com/nodejs/nodejs-dist-indexer/commit/76bec50e484ba02e667d9b7683f21c780c6a6a4a))
+
 ## [1.9.1](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.0...v1.9.1) (2026-10-27)
 
 ### Trivial Changes
