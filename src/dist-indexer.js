@@ -95,13 +95,11 @@ function fetch (url, gitref, callback) {
            `?rev=${refparts[1]}`
 
   ;(async () => {
-    const [response, { BufferListStream }] = await Promise.all([
-      globalThis.fetch(url, githubOptions),
-      import('bl')
-    ])
-    const bl = new BufferListStream()
-    await pipeline(Readable.fromWeb(response.body), bl)
-    return bl.toString()
+    const response = await globalThis.fetch(url, githubOptions)
+    if (!response.ok) {
+      throw new Error(`Fetch call got a response with status code ${response.status}`, { cause: response })
+    }
+    return response.text()
   })().then(r => callback(null, r), callback)
 }
 
