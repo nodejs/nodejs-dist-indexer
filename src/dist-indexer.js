@@ -7,8 +7,6 @@ const path = require('path')
 const argv = require('minimist')(process.argv.slice(2))
 const map = require('map-async')
 const after = require('after')
-const hyperquest = require('hyperquest')
-const bl = require('bl')
 const semver = require('semver')
 
 const transformFilename = require('./transform-filename')
@@ -93,13 +91,14 @@ function fetch (url, gitref, callback) {
   url = url.replace('{gitref}', refparts[1])
     .replace('{repo}', repo) +
            `?rev=${refparts[1]}`
-  hyperquest.get(url, githubOptions).pipe(bl((err, data) => {
-    if (err) {
-      return callback(err)
-    }
 
-    callback(null, data.toString())
-  }))
+  ;(async () => {
+    const response = await globalThis.fetch(url, githubOptions)
+    if (!response.ok) {
+      throw new Error(`Fetch call got a response with status code ${response.status}`, { cause: response })
+    }
+    return response.text()
+  })().then(r => callback(null, r), callback)
 }
 
 function fetchNpmVersion (gitref, callback) {
