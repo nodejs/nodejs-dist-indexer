@@ -1,3 +1,9 @@
+## [1.9.5](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.4...v1.9.5) (2026-11-02)
+
+### Bug Fixes
+
+* test should not rely on node being on PATH ([#113](https://github.com/nodejs/nodejs-dist-indexer/issues/113)) ([9d448ce](https://github.com/nodejs/nodejs-dist-indexer/commit/9d448cef5dec93341694124317f0c8384f4a2102))
+
 ## [1.9.4](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.3...v1.9.4) (2026-11-02)
 
 ### Trivial Changes
