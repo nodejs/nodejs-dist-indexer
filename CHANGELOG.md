@@ -1,3 +1,9 @@
+## [1.9.3](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.2...v1.9.3) (2026-11-02)
+
+### Trivial Changes
+
+* **deps:** bump actions/setup-node ([#114](https://github.com/nodejs/nodejs-dist-indexer/issues/114)) ([fdd9424](https://github.com/nodejs/nodejs-dist-indexer/commit/fdd9424afb58377f40635fefcb79423a954e7d73))
+
 ## [1.9.2](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.1...v1.9.2) (2026-10-28)
 
 ### Reverts
