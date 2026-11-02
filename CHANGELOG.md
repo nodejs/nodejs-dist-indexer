@@ -1,3 +1,9 @@
+## [1.9.4](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.3...v1.9.4) (2026-11-02)
+
+### Trivial Changes
+
+* **deps:** remove `hyperquest` and `bl` ([#111](https://github.com/nodejs/nodejs-dist-indexer/issues/111)) ([f1e7889](https://github.com/nodejs/nodejs-dist-indexer/commit/f1e7889059cee16f2c517b7f3ea4ab72dbbbd78e))
+
 ## [1.9.3](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.2...v1.9.3) (2026-11-02)
 
 ### Trivial Changes
