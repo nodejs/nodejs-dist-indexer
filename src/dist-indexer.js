@@ -96,6 +96,7 @@ function fetch (url, gitref, callback) {
     const response = await globalThis.fetch(url, githubOptions)
     if (response.status === 404) {
       // a missing file is not fatal: callers fall back to the next URL
+      await response.body?.cancel()
       return ''
     }
     if (!response.ok) {
