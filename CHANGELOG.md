@@ -1,3 +1,9 @@
+## [1.9.6](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.5...v1.9.6) (2026-11-16)
+
+### Bug Fixes
+
+* treat 404 responses as empty so URL fallbacks work again ([#117](https://github.com/nodejs/nodejs-dist-indexer/issues/117)) ([875ca7c](https://github.com/nodejs/nodejs-dist-indexer/commit/875ca7c6ddc4462254e6695e3c29630514a844b4)), closes [#111](https://github.com/nodejs/nodejs-dist-indexer/issues/111)
+
 ## [1.9.5](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.4...v1.9.5) (2026-11-02)
 
 ### Bug Fixes
