@@ -131,6 +131,8 @@ const tests = [
   { file: 'node-v14.13.0-linux-x64-musl.tar.xz' },
   { file: 'node-v14.13.0-linux-arm64-musl.tar.gz', type: 'linux-arm64-musl' },
   { file: 'node-v14.13.0-linux-arm64-musl.tar.xz' },
+  { file: 'node-v26.13.0-linux-arm64-pointer-compression.tar.gz', type: 'linux-arm64-pointer-compression' },
+  { file: 'node-v26.13.0-linux-arm64-pointer-compression.tar.xz' },
   { file: 'node-v14.13.0-linux-x64-pointer-compression.tar.gz', type: 'linux-x64-pointer-compression' },
   { file: 'node-v14.13.0-linux-x64-pointer-compression.tar.xz' },
   { file: 'node-v14.13.0-linux-x64-usdt.tar.gz', type: 'linux-x64-usdt' },
