@@ -1,3 +1,9 @@
+## [1.10.0](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.6...v1.10.0) (2026-11-20)
+
+### Features
+
+* index ARM64 pointer-compression builds ([#118](https://github.com/nodejs/nodejs-dist-indexer/issues/118)) ([e377bc5](https://github.com/nodejs/nodejs-dist-indexer/commit/e377bc5275a2c009e5639bd9c66ebe5eaa27604d))
+
 ## [1.9.6](https://github.com/nodejs/nodejs-dist-indexer/compare/v1.9.5...v1.9.6) (2026-11-16)
 
 ### Bug Fixes
